@@ -11,9 +11,9 @@ The website also has a landing page and a blog, but **this file governs Docs onl
 Your writing style must follow the Codex skill:
 - **Primary:** `stan-docs` (Turbo C / Stan Kelly-Bootle spirit: task-first, concise, practical)
 - **Reference files:**
-  - `references/turbo-c-exemplars.md` (verbatim micro-examples + patterns)
-  - `references/page-patterns.md` (templates for Manual + Reference pages)
-  - `references/terminology-dictionary.md` (canonical naming; no synonyms)
+  - `/Users/ronaldmannak/.codex/skills/public/stan-docs/references/turbo-c-exemplars.md` (verbatim micro-examples + patterns)
+  - `/Users/ronaldmannak/.codex/skills/public/stan-docs/references/page-patterns.md` (templates for Manual + Reference pages)
+  - `/Users/ronaldmannak/.codex/skills/public/stan-docs/references/terminilogy-dictionary.md` (canonical naming; no synonyms; note filename)
 
 Use the `stan-docs` checklists for every page.
 If there is any conflict: **terminology dictionary > skill.md rules > this agents.md**.
@@ -43,6 +43,7 @@ Humour is optional, subtle, and never inside **CAUTION** blocks.
 - Use canonical terminology from the dictionary (one spelling, one name).
 - The terminology dictionary applies to headings and UI labels too.
 - TODOs are allowed only in body text, never in headings.
+- Default server port is `11434`. Use it in examples unless a page states otherwise.
 
 ## Docusaurus rules
 - Every doc page must include frontmatter with at least `title` and `sidebar_position` (or `sidebar_label`).
