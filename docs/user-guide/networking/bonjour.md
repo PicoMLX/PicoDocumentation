@@ -56,8 +56,9 @@ these fields:
 | `ServerIdentifier` | String | Stable UUID for the server instance |
 
 :::caution
-Users can disable Bonjour in Pico AI Server settings. Always provide a manual
-host name or IP address entry as a fallback.
+The Pico AI Server admin can disable Bonjour discovery. If Bonjour traffic is
+blocked or not routed on your network, discovery will fail. Always provide a
+manual host name or IP address entry as a fallback.
 :::
 
 ## Next steps
