@@ -3,7 +3,7 @@ title: Custom URL Scheme
 sidebar_position: 10
 ---
 
-Mode: Reference
+<!-- Mode: Reference -->
 
 ## Summary
 Register your chat app's custom URL scheme so Pico AI Server can launch it from

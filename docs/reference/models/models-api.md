@@ -3,7 +3,7 @@ title: Models API
 sidebar_position: 2
 ---
 
-Mode: Reference
+<!-- Mode: Reference -->
 
 ## Summary
 List models that are already installed on Pico AI Server. Client apps cannot

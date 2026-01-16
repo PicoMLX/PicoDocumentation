@@ -3,7 +3,7 @@ title: Discover Servers with Bonjour
 sidebar_position: 7
 ---
 
-Mode: Manual
+<!-- Mode: Manual -->
 
 ## Understand Bonjour discovery
 

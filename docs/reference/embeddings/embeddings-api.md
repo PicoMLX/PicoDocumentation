@@ -3,7 +3,7 @@ title: Embeddings API
 sidebar_position: 2
 ---
 
-Mode: Reference
+<!-- Mode: Reference -->
 
 ## Summary
 Create embeddings using OpenAI-compatible or Ollama-compatible endpoints.

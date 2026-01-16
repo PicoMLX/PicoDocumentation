@@ -3,7 +3,7 @@ title: Chat API
 sidebar_position: 2
 ---
 
-Mode: Reference
+<!-- Mode: Reference -->
 
 ## Summary
 Send chat or completion requests using OpenAI-compatible or Ollama-compatible

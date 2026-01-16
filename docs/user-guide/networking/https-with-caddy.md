@@ -3,7 +3,7 @@ title: Add HTTPS with Caddy
 sidebar_position: 9
 ---
 
-Mode: Manual
+<!-- Mode: Manual -->
 
 ## Overview
 Use Caddy to add HTTPS for Pico AI Server on your LAN. This protects traffic

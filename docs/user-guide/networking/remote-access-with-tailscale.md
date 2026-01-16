@@ -3,7 +3,7 @@ title: Access Pico AI Server Remotely with Tailscale
 sidebar_position: 10
 ---
 
-Mode: Manual
+<!-- Mode: Manual -->
 
 ## Overview
 Use Tailscale to reach your Pico AI Server from anywhere. This makes the WebUI
