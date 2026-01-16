@@ -6,8 +6,9 @@ sidebar_position: 9
 Mode: Manual
 
 ## Overview
-Run Pico AI Server over HTTPS on your local machine so browser tools can call
-the API without mixed-content errors.
+Use Caddy to add HTTPS for Pico AI Server on your LAN. This protects traffic
+from casual snooping on shared Wi-Fi and gives you a secure base URL for
+clients and browser tools.
 
 ## What you will do
 - Install Caddy
@@ -81,4 +82,5 @@ the API without mixed-content errors.
   block for `https://127.0.0.1`.
 
 ## Next steps
-- Update your client base URL to `https://localhost`.
+- If you want remote access, set up Tailscale and use the HTTPS base URL from
+  your Tailscale address. See [Access Pico AI Server Remotely with Tailscale](./remote-access-with-tailscale.md).
