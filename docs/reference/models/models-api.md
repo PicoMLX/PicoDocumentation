@@ -1,5 +1,6 @@
 ---
 title: Models API
+description: List the models installed on Pico AI Server using OpenAI- and Ollama-compatible endpoints.
 sidebar_position: 2
 ---
 

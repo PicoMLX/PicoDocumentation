@@ -1,5 +1,6 @@
 ---
 title: Custom URL Scheme
+description: Register a custom URL scheme so Pico AI Server's Open Chat Client menu opens your chat app instead of the WebUI.
 sidebar_position: 10
 ---
 

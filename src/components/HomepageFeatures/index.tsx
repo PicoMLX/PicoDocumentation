@@ -11,32 +11,32 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'Easy to Use',
+    title: 'Runs Locally',
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Pico AI Server runs large language models on your own Mac. Your prompts
+        and data stay on your machine.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Drop-In Compatible',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Serve models, chat, and embeddings through OpenAI- and Ollama-compatible
+        APIs, so existing clients work without changes.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'Share on Your Network',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Enable LAN access and let other devices discover the server with
+        Bonjour, or reach it remotely over Tailscale.
       </>
     ),
   },

@@ -20,8 +20,8 @@ function HomepageHeader() {
         <div className={styles.buttons}>
           <Link
             className="button button--secondary button--lg"
-            to="/docs/intro">
-            Docusaurus Tutorial - 5min ⏱️
+            to="/docs/user-guide/intro">
+            Get Started
           </Link>
         </div>
       </div>
@@ -33,8 +33,8 @@ export default function Home(): ReactNode {
   const {siteConfig} = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />">
+      title={`${siteConfig.title} Documentation`}
+      description="Pico AI Server runs large language models locally on your Mac and serves them through OpenAI- and Ollama-compatible APIs. Install it, connect a client, and share it on your network.">
       <HomepageHeader />
       <main>
         <HomepageFeatures />

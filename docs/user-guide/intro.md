@@ -1,47 +1,57 @@
 ---
+title: About Pico AI Server
+description: Pico AI Server runs large language models locally on your Mac and serves them through OpenAI- and Ollama-compatible APIs. Start here.
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+<!-- Mode: Manual -->
 
-Let's discover **Docusaurus in less than 5 minutes**.
+# About Pico AI Server
 
-## Getting Started
+Pico AI Server runs large language models on your own Mac and serves them
+through OpenAI- and Ollama-compatible APIs. Prompts and data stay on your
+machine, and existing clients connect without code changes.
 
-Get started by **creating a new site**.
+## What you can do
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+- Run chat, completion, and embedding models locally.
+- Call them with OpenAI-compatible (`/v1/...`) or Ollama-compatible
+  (`/api/...`) endpoints.
+- Open the built-in WebUI to chat in a browser.
+- Share the server with other devices on your network, or reach it remotely.
 
-### What you'll need
+By default the server listens on port `11434`.
 
-- [Node.js](https://nodejs.org/en/download/) version 20.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
+## Who this manual is for
 
-## Generate a new site
+- **Admins** who install Pico AI Server, download models, and manage sharing.
+- **Client developers** who connect apps to the server's APIs.
+- **Power users** who want a private AI server on their own hardware.
 
-Generate a new Docusaurus site using the **classic template**.
+## How this documentation is organized
 
-The classic template will automatically be added to your project after you run the command:
+- **User Guide** — task-first pages: install and run the server, connect a
+  client, and set up networking such as [Bonjour discovery](./networking/bonjour.md),
+  [HTTPS with Caddy](./networking/https-with-caddy.md), and
+  [remote access with Tailscale](./networking/remote-access-with-tailscale.md).
+- **Reference** — API contracts for [chat](../reference/chat/chat-api.md),
+  [models](../reference/models/models-api.md), and
+  [embeddings](../reference/embeddings/embeddings-api.md), plus the
+  [OpenResponses API](../reference/openresponses-api.md) and the
+  [custom URL scheme](../reference/custom-url-scheme.md).
+
+## Verify your setup
+
+With Pico AI Server running, list the installed models:
 
 ```bash
-npm init docusaurus@latest my-website classic
+curl http://127.0.0.1:11434/v1/models
 ```
 
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
+A JSON response means the server is reachable. If you get a connection error,
+confirm Pico AI Server is running and listening on port `11434`.
 
-The command also installs all necessary dependencies you need to run Docusaurus.
+## Next steps
 
-## Start your site
-
-Run the development server:
-
-```bash
-cd my-website
-npm run start
-```
-
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
-
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
-
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+- New to Pico AI Server? Start with the User Guide.
+- Building a client? Go straight to the [Chat API](../reference/chat/chat-api.md).

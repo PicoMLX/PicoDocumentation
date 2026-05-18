@@ -1,5 +1,6 @@
 ---
 title: Access Pico AI Server Remotely with Tailscale
+description: Reach Pico AI Server from anywhere by connecting your devices over a private Tailscale network.
 sidebar_position: 10
 ---
 

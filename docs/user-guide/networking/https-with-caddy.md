@@ -1,5 +1,6 @@
 ---
 title: Add HTTPS with Caddy
+description: Add HTTPS to Pico AI Server on your LAN with Caddy as a reverse proxy and a trusted local certificate.
 sidebar_position: 9
 ---
 

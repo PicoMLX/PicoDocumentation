@@ -1,5 +1,6 @@
 ---
 title: OpenResponses API
+description: Pico AI Server is fully compatible with the OpenResponses API specification for AI responses.
 sidebar_position: 3
 ---
 

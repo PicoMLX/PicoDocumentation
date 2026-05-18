@@ -1,5 +1,6 @@
 ---
 title: Chat API
+description: Send chat and completion requests to Pico AI Server using OpenAI- or Ollama-compatible endpoints, including reasoning controls.
 sidebar_position: 2
 ---
 

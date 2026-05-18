@@ -1,5 +1,6 @@
 ---
 title: Embeddings API
+description: Create text embeddings with Pico AI Server using OpenAI- and Ollama-compatible endpoints and supported embedding models.
 sidebar_position: 2
 ---
 

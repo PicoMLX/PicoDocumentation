@@ -1,5 +1,6 @@
 ---
 title: Discover Servers with Bonjour
+description: Discover Pico AI Server instances on the local network with Bonjour (mDNS) so clients connect without typing a host name.
 sidebar_position: 7
 ---
 
