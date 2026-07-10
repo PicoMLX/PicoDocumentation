@@ -18,6 +18,7 @@ INLINE_CODE_RE = re.compile(r"`[^`]*`")
 LINK_RE = re.compile(r"(?<!!)\[[^\]]+\]\(([^)]+)\)")
 PLACEHOLDER_RE = re.compile(r"\b(?:TODO|FIXME|XXX)\b", re.IGNORECASE)
 SCHEME_RE = re.compile(r"^[A-Za-z][A-Za-z0-9+.-]*:")
+URL_RE = re.compile(r"https?://\S+")
 
 BRITISH_FORMS = {
     "analyse": "analyze",
@@ -99,6 +100,11 @@ BRITISH_FORMS = {
     "visualisation": "visualization",
     "whilst": "while",
 }
+
+BRITISH_RE = re.compile(
+    r"\b(" + "|".join(re.escape(british) for british in BRITISH_FORMS) + r")\b",
+    re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True)
@@ -247,7 +253,7 @@ def inspect_markdown(path: Path) -> list[Finding]:
             previous_heading_level = level
 
         prose = INLINE_CODE_RE.sub("", line)
-        prose = re.sub(r"https?://\S+", "", prose)
+        prose = URL_RE.sub("", prose)
 
         if PLACEHOLDER_RE.search(prose):
             findings.append(
@@ -259,16 +265,17 @@ def inspect_markdown(path: Path) -> list[Finding]:
                 )
             )
 
-        for british, american in BRITISH_FORMS.items():
-            if re.search(rf"\b{re.escape(british)}\b", prose, re.IGNORECASE):
-                findings.append(
-                    Finding(
-                        path,
-                        line_number,
-                        "warning",
-                        f"possible British spelling '{british}'; prefer '{american}'",
-                    )
+        for spelling_match in BRITISH_RE.finditer(prose):
+            british = spelling_match.group(1)
+            american = BRITISH_FORMS[british.lower()]
+            findings.append(
+                Finding(
+                    path,
+                    line_number,
+                    "warning",
+                    f"possible British spelling '{british}'; prefer '{american}'",
                 )
+            )
 
         for link_match in LINK_RE.finditer(line):
             finding = check_local_link(path, line_number, link_match.group(1))

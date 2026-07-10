@@ -5,7 +5,7 @@ sidebar_position: 1
 
 This page gets Pico AI Server running and proves the WebUI and API are alive. The goal is simple: start the server, open the browser chat, and confirm the default endpoint responds on port `11434`.
 
-Pico AI Server is a macOS app. The default server port is `11434`.
+Pico AI Server is a macOS app for Apple Silicon Macs — it runs models with MLX, which requires an M-series chip, so Intel Macs are not supported. The default server port is `11434`.
 
 ## Start the server
 

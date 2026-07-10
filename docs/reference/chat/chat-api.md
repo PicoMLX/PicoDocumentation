@@ -30,8 +30,8 @@ Send chat requests through either the OpenAI-compatible or Ollama-compatible sur
 | `frequency_context_size` | integer | No | Frequency window |
 | `max_tokens` | integer | No | Deprecated alias for `max_completion_tokens` |
 | `max_completion_tokens` | integer | No | Maximum completion tokens |
-| `reasoning.effort` | object | No | OpenAI-style reasoning control |
-| `chat_template_kwargs.enable_thinking` | object | No | vLLM-style reasoning control |
+| `reasoning.effort` | string | No | OpenAI-style reasoning control |
+| `chat_template_kwargs.enable_thinking` | boolean | No | vLLM-style reasoning control |
 | `think` | boolean | No | Ollama-style reasoning control |
 | `tools` | array | No | Function-style tool definitions |
 | `options` | object | No | Ollama-compatible generation options |
