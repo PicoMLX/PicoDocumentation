@@ -1,0 +1,4 @@
+interface:
+  display_name: "Practical Software Docs"
+  short_description: "Write clear, source-backed software documentation"
+  default_prompt: "Use $write-software-docs to create or improve this documentation with source-backed facts, an early working result, and clear American English."

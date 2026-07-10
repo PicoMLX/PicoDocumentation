@@ -6,122 +6,62 @@ sidebar_position: 2
 <!-- Mode: Reference -->
 
 ## Summary
-Create embeddings using OpenAI-compatible or Ollama-compatible endpoints.
-
-:::info
-The embeddings API is available from Pico AI Server 1.1.12 and newer.
-:::
+Pico AI Server has embedding code and embedding settings in source, but the public HTTP embeddings routes are not registered in the current server build. Treat this page as the current-state reference, not as a promise that `/v1/embeddings` or `/api/embed` are live today.
 
 ## Supported embedding models
-Embedding models are downloaded on demand and loaded into memory as needed.
-Pre-downloading and persistent caching are not supported.
+These models appear in the current `EmbeddingsConfiguration.models` list:
 
-Default storage location: `<base-directory>/Embeddings` as set in WebUI.
-TODO: Confirm how to read or change the base directory.
+| Model ID |
+| --- |
+| `sentence-transformers/all-MiniLM-L6-v2` |
+| `sentence-transformers/msmarco-bert-base-dot-v5` |
+| `sentence-transformers/paraphrase-multilingual-mpnet-base-v2` |
+| `thenlper/gte-base` |
+| `tomaarsen/xlm-roberta-base-multilingual-en-ar-fr-de-es-tr-it` |
 
-| Name | Architecture |
+Current defaults in source
+
+| Setting | Value |
 | --- | --- |
-| `all-MiniLM-L6-v2` | BERT |
-| `msmarco-bert-base-dot-v5` | BERT |
-| `LaBSE` | BERT |
-| `gte-base` | BERT |
-| `bert-base-uncased` | BERT |
-| `mxbai-embed-large-v1` | BERT |
-| `roberta-base` | RoBERTa |
-| `xlm-roberta-base` | XLM-RoBERTa |
-| `multilingual-e5-large` | XLM-RoBERTa |
-| `multilingual-e5-small` | XLM-RoBERTa |
-| `paraphrase-multilingual-mpnet-base-v2` | XLM-RoBERTa |
-| `xlm-roberta-base-multilingual-en-ar-fr-de-es-tr-it` | XLM-RoBERTa |
-| `clip-vit-base-patch16` | CLIP |
-| `clip-vit-base-patch32` | CLIP |
-| `clip-vit-large-patch14` | CLIP |
-| `glove-twitter-25` | Word2Vec |
-| `glove-twitter-50` | Word2Vec |
-| `glove-twitter-100` | Word2Vec |
-| `glove-twitter-200` | Word2Vec |
-| `potion-base-2M` | Model2Vec |
-| `potion-base-4M` | Model2Vec |
-| `potion-base-8M` | Model2Vec |
-| `potion-retrieval-32M` | Model2Vec |
-| `potion-base-32M` | Model2Vec |
-| `M2V_base_output` | Model2Vec |
-| `M2V_base_output` | Static |
-| `static-similarity-mrl-multilingual-v1` | Static |
+| Default embeddings model | `sentence-transformers/msmarco-bert-base-dot-v5` |
+| Batch size | `32` |
+| Parse format | `automatic` |
+| Splitter | `semantic` |
+| Chunk size | `512` |
+| Chunk overlap | `96` |
+| Threshold | `0.7` |
+| Max results | `30` |
 
-## `POST /v1/embeddings`
-OpenAI-compatible embeddings endpoint.
+## Storage
 
-Parameters
-| Name | Type | Required | Default | Description | Constraints |
-| --- | --- | --- | --- | --- | --- |
-| `model` | String | Yes | None | Embedding model name | Must be installed |
-| `input` | String or Array | Yes | None | Input text(s) to embed | TODO: confirm size limits |
-| `encoding_format` | String | No | None | Ignored by Pico AI Server | None |
-| `user` | String | No | None | Ignored by Pico AI Server | None |
+| Item | Current path shape |
+| --- | --- |
+| Base library | User-configurable model-library base directory |
+| Language models | `<base>/models/` |
+| Embedding models | `<base>/models/embeddings/` |
 
-Example request
+## Example
+
+Use this negative check to confirm the current build does not expose the public OpenAI-compatible embeddings route:
+
 ```bash
-curl http://127.0.0.1:11434/v1/embeddings \
+curl -i http://127.0.0.1:11434/v1/embeddings \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "all-MiniLM-L6-v2",
+    "model": "sentence-transformers/msmarco-bert-base-dot-v5",
     "input": "hello world"
   }'
 ```
 
-Example response
-```json
-{
-  "object": "list",
-  "model": "all-MiniLM-L6-v2",
-  "data": [
-    {
-      "object": "embedding",
-      "index": 0,
-      "embedding": [TODO]
-    }
-  ]
-}
-```
-
-## `POST /api/embed`
-Ollama-compatible embeddings endpoint.
-
-Parameters
-| Name | Type | Required | Default | Description | Constraints |
-| --- | --- | --- | --- | --- | --- |
-| `model` | String | Yes | None | Embedding model name | Must be installed |
-| `input` | String or Array | Yes | None | Input text(s) to embed | TODO: confirm size limits |
-
-Example request
-```bash
-curl http://127.0.0.1:11434/api/embed \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "all-MiniLM-L6-v2",
-    "input": "hello world"
-  }'
-```
-
-Example response
-```json
-{
-  "model": "all-MiniLM-L6-v2",
-  "embeddings": [[TODO]],
-  "total_duration": null,
-  "load_duration": null,
-  "prompt_eval_count": null
-}
-```
+Expect a not-found style result, because the current router does not register this path.
 
 ## Errors
-TODO: Confirm error codes and messages.
 
-| Code | Message | Cause | Fix |
-| --- | --- | --- | --- |
-| TODO | TODO | TODO | TODO |
+| Current state | Meaning |
+| --- | --- |
+| Route not available | `/v1/embeddings` and `/api/embed` are commented out in the current router |
 
 ## Edge cases
-- Requesting a model that is not installed returns an error. TODO: confirm error code.
-- Large input arrays may exceed limits. TODO: confirm limits and behavior.
+- PicoCore does include an embedding service, so this is an availability issue in the HTTP surface, not an absence of embedding code.
+- The native app also includes embedding settings, but the embeddings tab is not enabled in the current settings UI.
+- TODO: document the public request and response schema when the server registers `/v1/embeddings` or `/api/embed`.
