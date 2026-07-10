@@ -3,15 +3,13 @@ title: OpenResponses API
 sidebar_position: 3
 ---
 
-<!-- Mode: Reference -->
-
 ## Summary
-Pico AI Server exposes `POST /v1/responses` as its current OpenResponses entry point. Use this path when you want OpenResponses-style output objects and stream events. Keep the helper lifecycle routes out of production clients for now; they exist in source, but they are not ready for public documentation.
+Pico AI Server exposes `POST /v1/responses` as its current OpenResponses entry point. Use this path when you want OpenResponses-style output objects and stream events. Keep the helper lifecycle routes out of production clients for now; they exist in the current build, but they are not ready for public documentation.
 
 ## Endpoint
 - `POST /v1/responses`
 
-## Request Fields
+## Request fields
 
 | Field | Type | Required | Notes |
 | --- | --- | --- | --- |
@@ -81,9 +79,9 @@ curl -N http://127.0.0.1:11434/v1/responses \
 
 The stream uses `text/event-stream`. The current implementation emits standard response lifecycle events such as `response.created` and `response.completed`.
 
-## Response Notes
+## Response notes
 
-| Item | Current behaviour |
+| Item | Current behavior |
 | --- | --- |
 | `tool_choice` omitted | Treated as `auto` |
 | `tool_choice: "none"` | Disables both explicit tools and internal tools |
@@ -97,7 +95,7 @@ The stream uses `text/event-stream`. The current implementation emits standard r
 | `400` | `invalid_request_error` | Invalid request shape or empty input |
 | `401` | `authentication_error` | Reserved for auth failures |
 | `404` | `not_found` | Not found |
-| `408` | `request_timeout` | Generation cancelled or timed out |
+| `408` | `request_timeout` | Generation canceled or timed out |
 | `409` | `conflict` | Conflict state |
 | `500` | `server_error` | Internal failure |
 
@@ -113,7 +111,7 @@ Error body shape
 }
 ```
 
-## Edge Cases
+## Edge cases
 - If `model` is omitted, the current build falls back to the configured default model.
-- Helper routes such as `GET /v1/responses/:response_id` and `POST /v1/responses/:response_id/cancel` exist in source, but they are not ready for public client use.
+- Helper routes such as `GET /v1/responses/:response_id` and `POST /v1/responses/:response_id/cancel` exist in the current build, but they are not ready for public client use.
 - If you need multimodal request handling today, the Chat API is the safer surface. The current Responses adapter is text-first.

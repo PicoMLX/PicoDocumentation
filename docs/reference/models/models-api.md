@@ -3,8 +3,6 @@ title: Models API
 sidebar_position: 2
 ---
 
-<!-- Mode: Reference -->
-
 ## Summary
 Use these endpoints to list models that are already available to Pico AI Server. These routes do not download models. Model downloads are managed by the admin in the native app.
 

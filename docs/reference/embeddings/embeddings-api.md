@@ -3,13 +3,11 @@ title: Embeddings API
 sidebar_position: 2
 ---
 
-<!-- Mode: Reference -->
-
 ## Summary
-Pico AI Server has embedding code and embedding settings in source, but the public HTTP embeddings routes are not registered in the current server build. Treat this page as the current-state reference, not as a promise that `/v1/embeddings` or `/api/embed` are live today.
+Pico AI Server includes embedding support and embedding settings, but the public HTTP embeddings routes are not registered in the current server build. Treat this page as the current-state reference, not as a promise that `/v1/embeddings` or `/api/embed` are live today.
 
 ## Supported embedding models
-These models appear in the current `EmbeddingsConfiguration.models` list:
+The current build lists these embedding models:
 
 | Model ID |
 | --- |
@@ -19,7 +17,7 @@ These models appear in the current `EmbeddingsConfiguration.models` list:
 | `thenlper/gte-base` |
 | `tomaarsen/xlm-roberta-base-multilingual-en-ar-fr-de-es-tr-it` |
 
-Current defaults in source
+Current defaults
 
 | Setting | Value |
 | --- | --- |
@@ -59,9 +57,9 @@ Expect a not-found style result, because the current router does not register th
 
 | Current state | Meaning |
 | --- | --- |
-| Route not available | `/v1/embeddings` and `/api/embed` are commented out in the current router |
+| Route not available | `/v1/embeddings` and `/api/embed` are not registered in the current router |
 
 ## Edge cases
-- PicoCore does include an embedding service, so this is an availability issue in the HTTP surface, not an absence of embedding code.
+- Pico AI Server does include an embedding service, so this is an availability gap in the HTTP surface, not an absence of embedding support.
 - The native app also includes embedding settings, but the embeddings tab is not enabled in the current settings UI.
-- TODO: document the public request and response schema when the server registers `/v1/embeddings` or `/api/embed`.
+- The public request and response schema will be documented here once the server registers `/v1/embeddings` or `/api/embed`.

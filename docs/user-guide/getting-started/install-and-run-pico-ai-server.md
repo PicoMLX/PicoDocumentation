@@ -3,21 +3,12 @@ title: Install and Run Pico AI Server
 sidebar_position: 1
 ---
 
-<!-- Mode: Manual -->
-
 This page gets Pico AI Server running and proves the WebUI and API are alive. The goal is simple: start the server, open the browser chat, and confirm the default endpoint responds on port `11434`.
 
-## What you'll do
-- Launch Pico AI Server.
-- Finish the first-run flow.
-- Open the WebUI.
-- Confirm the API is listening.
+Pico AI Server is a macOS app. The default server port is `11434`.
 
-## Before you start
-- Pico AI Server is a macOS app.
-- The default server port in the current source is `11434`.
+## Start the server
 
-## Do it
 1. Launch Pico AI Server.
 2. Complete the first-run flow.
    The onboarding flow can set `Allow local network connections`, `Broadcast Bonjour`, `Open at login`, and `Prevent sleep`.
@@ -31,6 +22,7 @@ This page gets Pico AI Server running and proves the WebUI and API are alive. Th
    When the server is running, it shows the status, a `Start` or `Stop` button, and an IP-based server address with a copy button.
 
 ## Verify it worked
+
 Run:
 
 ```bash
@@ -39,15 +31,14 @@ curl http://127.0.0.1:11434/v1/models
 
 If you get a JSON response, the server is up. If you also open `http://127.0.0.1:11434/`, the WebUI should load in your browser.
 
-## Try it now
+To see the host name Pico AI Server reports for the Mac, ask the server directly:
 
 ```bash
 curl http://127.0.0.1:11434/hostname
 ```
 
-This returns the current host name that Pico AI Server sees on the Mac.
-
 ## Troubleshooting
+
 - **Symptom:** The browser opens a blank page or cannot connect.
   **Cause:** The server is not running yet.
   **Fix:** Use the native app or the menu extra to start the server, then reload the page.
@@ -59,5 +50,6 @@ This returns the current host name that Pico AI Server sees on the Mac.
   **Fix:** Open the `Models` tab in the native app and wait for a model to become available.
 
 ## Next steps
+
 - [Configure Settings](./configure-settings.md)
 - [Use the WebUI](../webui/use-the-webui.md)

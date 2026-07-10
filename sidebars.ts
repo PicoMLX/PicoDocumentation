@@ -35,6 +35,11 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'MCP & Tools',
+      items: ['user-guide/enable-built-in-tools'],
+    },
+    {
+      type: 'category',
       label: 'Reference',
       items: [
         'reference/endpoint-summary',

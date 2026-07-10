@@ -3,17 +3,15 @@ title: Chat API
 sidebar_position: 2
 ---
 
-<!-- Mode: Reference -->
-
 ## Summary
-Send chat requests through either the OpenAI-compatible or Ollama-compatible surface. The current source accepts text-only messages, content-part arrays with text, images, and video, plus Ollama-style `images` arrays on messages.
+Send chat requests through either the OpenAI-compatible or Ollama-compatible surface. The current build accepts text-only messages, content-part arrays with text, images, and video, plus Ollama-style `images` arrays on messages.
 
 ## Endpoints
 - `POST /v1/chat/completions`
 - `POST /api/chat`
 - `POST /api/generate`
 
-## Request Fields
+## Request fields
 
 | Field | Type | Required | Notes |
 | --- | --- | --- | --- |
@@ -38,20 +36,20 @@ Send chat requests through either the OpenAI-compatible or Ollama-compatible sur
 | `tools` | array | No | Function-style tool definitions |
 | `options` | object | No | Ollama-compatible generation options |
 
-## Message Schema
+## Message schema
 
 ### Roles
 
 `system`, `user`, `assistant`, `tool`
 
-### Content Forms
+### Content forms
 
 | Form | Notes |
 | --- | --- |
 | string | Plain text message |
 | array of content parts | Supports mixed text and media parts |
 
-### Content Part Types
+### Content part types
 
 | Type | Notes |
 | --- | --- |
@@ -187,7 +185,7 @@ Ollama-compatible streaming uses `application/x-ndjson`.
 | --- | --- | --- |
 | `400` | `invalid_request_error` | Empty `messages`, bad JSON, unsupported request shape |
 | `404` | `not_found_error` | Model not found |
-| `408` | `invalid_request_error` | Generation cancelled |
+| `408` | `invalid_request_error` | Generation canceled |
 | `409` | `invalid_request_error` | Model is incomplete |
 | `500` | `server_error` | Internal failure |
 
@@ -201,5 +199,5 @@ Ollama-compatible errors use the simpler form:
 - If `model` is omitted, the current build falls back to the configured default model.
 - If `stream` is omitted, the request is handled as non-streaming.
 - Multiple system messages are merged before generation.
-- The request model accepts `format`, but the current source does not document a stable effect for it.
+- The request model accepts `format`, but the current build does not give it a stable, documented effect.
 - There is no public `/v1/chat` route. Use `/v1/chat/completions`.
