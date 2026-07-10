@@ -15,8 +15,8 @@ service required.
 
 Built-in tools are separate from the tools you connect through the Model Context
 Protocol (MCP). MCP connects Pico to *external* servers; built-in tools run
-*inside* Pico AI Server. Both are turned on in Pico's settings, and both are off
-until you enable them.
+*inside* Pico AI Server. Both are managed in Pico's settings, in the **Tools**
+tab, where you enable or disable them as needed.
 
 This page shows how to enable built-in tools and uses the **System Info** tool as
 the worked example.
@@ -51,15 +51,17 @@ enabled, the model can report details such as:
 - **Operating system** — name, version, and build
 - **Host app** — Pico AI Server's name, version, and build
 
-System Info is on by default, alongside the other harmless local utilities. You can
-turn it off in the **Tools** tab like any other tool.
+You turn **System Info** on or off in the **Tools** tab like any other built-in
+tool.
+
+TODO: Confirm whether System Info is enabled by default.
 
 ### Try it now
 With a tool-capable model installed and the **System Info** tool enabled, ask a
 question that needs host details. From the Web Chat, or over the API:
 
 ```bash
-curl http://127.0.0.1:11434/v1/chat/completions \
+curl http://127.0.0.1:11434/v1/chat \
   -H "Content-Type: application/json" \
   -d '{
     "model": "your-model-name",
