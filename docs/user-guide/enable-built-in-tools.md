@@ -51,10 +51,8 @@ enabled, the model can report details such as:
 - **Operating system** — name, version, and build
 - **Host app** — Pico AI Server's name, version, and build
 
-You turn **System Info** on or off in the **Tools** tab like any other built-in
-tool.
-
-TODO: Confirm whether System Info is enabled by default.
+System Info ships enabled by default. You can turn it on or off in the **Tools**
+tab like any other built-in tool.
 
 ### Try it now
 With a tool-capable model installed and the **System Info** tool enabled, ask a
