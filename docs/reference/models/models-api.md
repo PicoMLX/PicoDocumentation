@@ -6,14 +6,13 @@ sidebar_position: 2
 <!-- Mode: Reference -->
 
 ## Summary
-List models that are already installed on Pico AI Server. Client apps cannot
-download models directly. The admin downloads models in WebUI.
+Use these endpoints to list models that are already available to Pico AI Server. These routes do not download models. Model downloads are managed by the admin in the native app.
 
 ## Endpoints
-- `GET /v1/models` (OpenAI-compatible)
-- `GET /api/tags` (Ollama-compatible)
-- `GET /api/ps` (Ollama-compatible, stub)
-- `GET /api/show` (Ollama-compatible)
+- `GET /v1/models`
+- `GET /api/tags`
+- `GET /api/ps`
+- `POST /api/show`
 
 ## `GET /v1/models`
 OpenAI-compatible list of available models.
@@ -21,18 +20,20 @@ OpenAI-compatible list of available models.
 Parameters: none.
 
 Example request
+
 ```bash
 curl http://127.0.0.1:11434/v1/models
 ```
 
 Example response
+
 ```json
 {
   "object": "list",
   "data": [
     {
-      "object": "model",
       "id": "DeepSeek-R1-Distill-Qwen-14B-8bit",
+      "object": "model",
       "created": 1740592086,
       "owned_by": "Pico AI Server"
     }
@@ -40,25 +41,15 @@ Example response
 }
 ```
 
-Response fields
-| Name     | Type    | Required | Default | Description | Constraints |
-| ---      | ---     | ---      | ---     | ---         | --- |
-| `object` | String  | Yes      | `list`  | Always `list` | Fixed value |
-| `data`   | Array   | Yes      | None    | List of model objects | None |
+Fields
 
-Model object
-| Name       | Type   | Required | Default | Description | Constraints |
-| ---        | ---    | ---      | ---     | ---         | --- |
-| `id`       | String | Yes      | None    | Model name | Hugging Face repo name |
-| `created`  | Number | Yes      | None    | Last modified time (Unix timestamp) | TODO: confirm |
-| `object`   | String | Yes      | `model` | Always `model` | Fixed value |
-| `owned_by` | String | Yes      | `Pico AI Server` | Owner | Fixed value |
-
-:::note
-The model name is the repository name on Hugging Face. For example, if
-the model URL is `https://huggingface.co/mlx-community/DeepSeek-R1-Distill-Llama-8B-3bit`,
-the model name is `DeepSeek-R1-Distill-Llama-8B-3bit`.
-:::
+| Field | Type | Notes |
+| --- | --- | --- |
+| `object` | string | Always `list` |
+| `data[].id` | string | The display name used by Pico AI Server |
+| `data[].object` | string | Always `model` |
+| `data[].created` | integer | Last-modified time from the local model record |
+| `data[].owned_by` | string | Always `Pico AI Server` in the current build |
 
 ## `GET /api/tags`
 Ollama-compatible list of available models.
@@ -66,73 +57,132 @@ Ollama-compatible list of available models.
 Parameters: none.
 
 Example request
+
 ```bash
 curl http://127.0.0.1:11434/api/tags
 ```
 
-Response fields
-| Name     | Type  | Required | Default | Description | Constraints |
-| ---      | ---   | ---      | ---     | ---         | --- |
-| `models` | Array | Yes      | None    | List of model objects | None |
+Example response excerpt
 
-Model object
-| Name          | Type   | Required | Default | Description | Constraints |
-| ---           | ---    | ---      | ---     | ---         | --- |
-| `name`        | String | Yes      | None    | Model name | None |
-| `size`        | Number | Yes      | None    | Model size in bytes | TODO: confirm |
-| `modified_at` | String | Yes      | None    | ISO 8601 timestamp | TODO: confirm |
-| `digest`      | String | Yes      | None    | SHA digest | TODO: confirm |
-| `model`       | String | Yes      | None    | Hugging Face repo name | None |
-| `details`     | Object | Yes      | None    | Model details | None |
+```json
+{
+  "models": [
+    {
+      "name": "MODEL_NAME:latest",
+      "model": "MODEL_ID:latest",
+      "size": 1234567890,
+      "digest": "",
+      "details": {
+        "format": "mlx",
+        "parent_model": "",
+        "family": "MODEL_FAMILY",
+        "parameter_size": "PARAMETER_SIZE",
+        "quantization_level": "QUANTIZATION"
+      }
+    }
+  ]
+}
+```
 
-Details object
-| Name                 | Type   | Required | Default | Description | Constraints |
-| ---                  | ---    | ---      | ---     | ---         | --- |
-| `format`             | String | Yes      | None    | Model format | TODO: confirm |
-| `parent_model`       | String | Yes      | None    | Parent model name | TODO: confirm |
-| `family`             | String | Yes      | None    | Model family | None |
-| `quantization_level` | String | Yes      | None    | Quantization | None |
-| `parameter_size`     | String | Yes      | None    | Parameter size | None |
+Fields
+
+| Field | Type | Notes |
+| --- | --- | --- |
+| `models[].name` | string | Pico display name with `:latest` appended |
+| `models[].model` | string | Internal model identifier with `:latest` appended |
+| `models[].size` | integer | Stored model size |
+| `models[].digest` | string | SHA if available, else empty string |
+| `models[].details.format` | string | Always `mlx` in the current build |
+| `models[].details.parent_model` | string | Empty string in the current build |
+| `models[].details.family` | string | Model family from Pico metadata |
+| `models[].details.parameter_size` | string | Parameter-size string from Pico metadata |
+| `models[].details.quantization_level` | string | Quantization string from Pico metadata |
 
 ## `GET /api/ps`
-Ollama-compatible stub.
+Ollama-compatible process list.
 
 Parameters: none.
 
 Example request
+
 ```bash
 curl http://127.0.0.1:11434/api/ps
 ```
 
-Example response
+Example response excerpt
+
 ```json
 {
-  "parameters": "",
-  "template": "Unknown",
-  "license": "Unknown",
-  "modelfile": "Unknown"
+  "models": [
+    {
+      "name": "MODEL_NAME:latest",
+      "model": "MODEL_ID:latest",
+      "expires_at": "2026-03-28T19:00:00Z",
+      "details": {
+        "format": "mlx"
+      }
+    }
+  ]
 }
 ```
 
-## `GET /api/show`
-Ollama-compatible endpoint for model information.
+In the current build, this route reports available models with idle-expiry data. It is not a strict "loaded models only" view.
 
-Parameters: none.
+## `POST /api/show`
+Ollama-compatible model metadata lookup.
+
+Parameters
+
+| Field | Type | Required | Notes |
+| --- | --- | --- | --- |
+| `model` | string | Yes | Accepts names with or without `:latest` |
 
 Example request
+
 ```bash
-curl http://127.0.0.1:11434/api/show
+curl http://127.0.0.1:11434/api/show \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "MODEL_NAME:latest"
+  }'
 ```
 
-TODO: Confirm the response body for `/api/show`. Older docs conflict.
+Example response excerpt
+
+```json
+{
+  "modelfile": "",
+  "parameters": "",
+  "template": "",
+  "details": {
+    "format": "mlx",
+    "family": "llama",
+    "parameter_size": "PARAMETER_SIZE",
+    "quantization_level": "QUANTIZATION"
+  },
+  "info": {
+    "llama.context_length": 4096
+  },
+  "capabilities": ["completion", "thinking", "tools"]
+}
+```
+
+Notes
+
+| Field | Notes |
+| --- | --- |
+| `details.family` | Hard-coded to `llama` in the current build |
+| `info["llama.context_length"]` | Always present in the current build |
+| `capabilities` | Derived from model tags such as reasoning, tools, and vision |
 
 ## Errors
-TODO: Confirm error codes and messages.
 
-| Code | Message | Cause | Fix |
-| ---  | ---     | ---   | --- |
-| TODO | TODO    | TODO  | TODO |
+| Status | Meaning | Notes |
+| --- | --- | --- |
+| `500` | Server could not read model metadata | Applies to all model routes when the local model store fails |
 
 ## Edge cases
-- Empty list when no models are installed.
-- TODO: Confirm response when model metadata is missing.
+- Empty arrays are valid when no models are available yet.
+- `/api/show` strips `:latest` before lookup.
+- A missing model on `/api/show` is intended to be a `404`, but the current controller catches the lookup error and may return `500` instead.
+- Client apps can list models, but they cannot download models through these routes.

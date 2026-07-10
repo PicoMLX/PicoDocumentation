@@ -1,47 +1,54 @@
 ---
+title: About This Manual
 sidebar_position: 1
 ---
 
-# Tutorial Intro
+<!-- Mode: Manual -->
 
-Let's discover **Docusaurus in less than 5 minutes**.
+Pico AI Server is a local AI server for macOS. It serves the WebUI at the root URL, exposes OpenAI-compatible and Ollama-compatible endpoints, adds an OpenResponses endpoint, and can share the service on your local network.
 
-## Getting Started
+This manual is for three groups: the admin who runs Pico AI Server, the person who uses the WebUI, and the developer who connects a client. Start with the task you want to finish today.
 
-Get started by **creating a new site**.
+## What you'll do
+- Pick the right starting page.
+- Check that Pico AI Server is reachable.
+- Jump to the correct API reference.
 
-Or **try Docusaurus immediately** with **[docusaurus.new](https://docusaurus.new)**.
+## Before you start
+- Use `http://127.0.0.1:11434` unless a page says otherwise.
+- Run the examples on the Mac that hosts Pico AI Server unless the page says to test from another device.
 
-### What you'll need
+## Pick your path
+1. If you want browser chat on one Mac, read [Install and Run Pico AI Server](./getting-started/install-and-run-pico-ai-server.md).
+2. If you want to share Pico AI Server on your LAN, read [Configure Settings](./getting-started/configure-settings.md) and [LAN Sharing Basics](./networking/lan-sharing-basics.md).
+3. If you are building a client, read [Connect a Client](./getting-started/connect-a-client.md) and then the Reference section.
+4. If you only need the endpoint list, open [Endpoint Summary](../reference/endpoint-summary.md).
 
-- [Node.js](https://nodejs.org/en/download/) version 20.0 or above:
-  - When installing Node.js, you are recommended to check all checkboxes related to dependencies.
-
-## Generate a new site
-
-Generate a new Docusaurus site using the **classic template**.
-
-The classic template will automatically be added to your project after you run the command:
-
-```bash
-npm init docusaurus@latest my-website classic
-```
-
-You can type this command into Command Prompt, Powershell, Terminal, or any other integrated terminal of your code editor.
-
-The command also installs all necessary dependencies you need to run Docusaurus.
-
-## Start your site
-
-Run the development server:
+## Verify it worked
+Run:
 
 ```bash
-cd my-website
-npm run start
+curl http://127.0.0.1:11434/v1/models
 ```
 
-The `cd` command changes the directory you're working with. In order to work with your newly created Docusaurus site, you'll need to navigate the terminal there.
+If Pico AI Server is running, you get JSON back. On a clean installation the `data` array may be empty.
 
-The `npm run start` command builds your website locally and serves it through a development server, ready for you to view at http://localhost:3000/.
+## Try it now
 
-Open `docs/intro.md` (this page) and edit some lines: the site **reloads automatically** and displays your changes.
+```bash
+open http://127.0.0.1:11434
+```
+
+This should open the WebUI in your browser.
+
+## Troubleshooting
+- **Symptom:** `curl` says the connection was refused.
+  **Cause:** Pico AI Server is not running.
+  **Fix:** Read [Install and Run Pico AI Server](./getting-started/install-and-run-pico-ai-server.md).
+- **Symptom:** The browser opens, but you cannot use a model yet.
+  **Cause:** No model is available.
+  **Fix:** Open the native app and check the `Models` tab.
+
+## Next steps
+- [Quick Start Roadmap](./quick-start-roadmap.md)
+- [Endpoint Summary](../reference/endpoint-summary.md)
