@@ -141,6 +141,8 @@ def collect_markdown_paths(raw_paths: list[str]) -> tuple[list[Path], list[str]]
 
 def strip_link_destination(raw_destination: str) -> str:
     destination = raw_destination.strip()
+    if not destination:
+        return ""
     if destination.startswith("<") and ">" in destination:
         destination = destination[1 : destination.index(">")]
     else:
@@ -181,6 +183,8 @@ def inspect_markdown(path: Path) -> list[Finding]:
         lines = path.read_text(encoding="utf-8").splitlines()
     except UnicodeDecodeError:
         return [Finding(path, 1, "error", "file is not valid UTF-8")]
+    except OSError as exc:
+        return [Finding(path, 1, "error", f"cannot read file: {exc}")]
 
     in_frontmatter = bool(lines and lines[0].strip() == "---")
     in_fence = False

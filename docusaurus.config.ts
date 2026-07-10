@@ -103,7 +103,7 @@ const config: Config = {
           items: [
             {
               label: 'Documentation',
-              to: '/docs/user-guide/intro',
+              to: '/docs/user-guide/about-this-manual',
             },
           ],
         },

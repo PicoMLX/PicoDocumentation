@@ -17,7 +17,7 @@ Pico AI Server exposes `POST /v1/responses` as its current OpenResponses entry p
 | `model` | string | No | Current build falls back to the configured default model if omitted |
 | `stream` | boolean | No | `true` enables `text/event-stream` |
 | `max_output_tokens` | integer | No | Maps to the server max-completion setting |
-| `reasoning.effort` | object | No | `none` and `low` map to reasoning off |
+| `reasoning.effort` | string | No | `none` and `low` map to reasoning off |
 | `tools` | array | No | Function tools are bridged into the Pico tool format |
 | `tool_choice` | string or object | No | Defaults to `auto` when omitted |
 | `temperature` | number | No | Defaults to `1` in the current non-streaming response builder |
