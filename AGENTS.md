@@ -8,41 +8,40 @@ The website also has a landing page and a blog, but **this file governs Docs onl
 - In scope: Docs pages only (Manual + Reference).
 - Out of scope: landing page, blog, product decisions, roadmap.
 
-Your writing style must follow the Codex skill:
-- **Primary:** `stan-docs` (Turbo C / Stan Kelly-Bootle spirit: task-first, concise, practical)
-- **Reference files:**
-  - `/Users/ronaldmannak/.codex/skills/public/stan-docs/references/turbo-c-exemplars.md` (verbatim micro-examples + patterns)
-  - `/Users/ronaldmannak/.codex/skills/public/stan-docs/references/page-patterns.md` (templates for Manual + Reference pages)
-  - `/Users/ronaldmannak/.codex/skills/public/stan-docs/references/terminilogy-dictionary.md` (canonical naming; no synonyms; note filename)
+Your writing style must follow the in-repo skill:
+- **Primary:** `write-software-docs` (in `.claude/skills/write-software-docs/` and `.agents/skills/write-software-docs/`)
+- Read its `references/` files when creating substantial prose, and run
+  `python3 .claude/skills/write-software-docs/scripts/check_markdown.py --strict <paths>`
+  before delivering Markdown changes.
 
-Use the `stan-docs` checklists for every page.
-If there is any conflict: **terminology dictionary > skill.md rules > this agents.md**.
+If there is any conflict: **skill rules > this agents.md**.
 
 ---
 
 ## Voice and modes
-Every page must declare a mode:
+Classify each page as a Manual (task) page or a Reference page while planning, and structure it accordingly:
 
-- **Mode: Manual**
-  - Task-first. Numbered steps. Verification. “Try it now.” Troubleshooting.
-  - Use “you”. Use imperative headings.
+- **Manual pages**
+  - Task-first. Numbered steps. Observable verification. Troubleshooting.
+  - Use “you”. Start task headings with a plain verb.
 
-- **Mode: Reference**
+- **Reference pages**
   - Contract-first. Parameters and schemas. Errors. Edge cases.
   - Neutral tone. Examples are mandatory (curl first, then one SDK if it exists).
 
-Humour is optional, subtle, and never inside **CAUTION** blocks.
+Do not print mode markers or other internal metadata in the finished page.
+Humor is optional, subtle, and never inside **CAUTION** blocks.
 
 ---
 
 ## Non-negotiables
 - No invented behavior, flags, endpoints, UI labels, or defaults.
-  - If unknown: write `TODO:` clearly and keep the doc safe.
+  - If unknown: omit it, qualify it, or report the gap outside the page. Do
+    not leave `TODO:` placeholders in reader-facing pages.
 - Every page includes at least one runnable example.
 - Every task page includes “Verify it worked”.
-- Use canonical terminology from the dictionary (one spelling, one name).
-- The terminology dictionary applies to headings and UI labels too.
-- TODOs are allowed only in body text, never in headings.
+- Use canonical terminology (one spelling, one name), and use American
+  English in prose while preserving exact UI labels and product strings.
 - Default server port is `11434`. Use it in examples unless a page states otherwise.
 
 ## Docusaurus rules

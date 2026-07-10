@@ -5,7 +5,7 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'Introduction',
-      items: ['user-guide/intro', 'user-guide/quick-start-roadmap'],
+      items: ['user-guide/about-this-manual', 'user-guide/quick-start-roadmap'],
     },
     {
       type: 'category',
@@ -32,6 +32,11 @@ const sidebars: SidebarsConfig = {
         'user-guide/webui/use-the-webui',
         'user-guide/webui/open-web-chat-and-launch-client-apps',
       ],
+    },
+    {
+      type: 'category',
+      label: 'MCP & Tools',
+      items: ['user-guide/enable-built-in-tools'],
     },
     {
       type: 'category',

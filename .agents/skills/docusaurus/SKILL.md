@@ -51,7 +51,7 @@ npx docusaurus start
 
 ### Project Structure
 
-```
+```text
 my-website/
 ├── docs/                  # Documentation pages
 │   ├── intro.md
@@ -324,7 +324,7 @@ npm run docusaurus docs:version 1.0.0
 
 ### Version Structure
 
-```
+```text
 website/
 ├── docs/               # Current version (Next)
 ├── versioned_docs/
@@ -376,7 +376,7 @@ i18n: {
 
 ### Directory Structure
 
-```
+```text
 website/
 ├── i18n/
 │   ├── en/
@@ -489,7 +489,7 @@ jobs:
 
 ### 1. Organize Content Logically
 
-```
+```text
 docs/
 ├── getting-started/
 │   ├── installation.md
