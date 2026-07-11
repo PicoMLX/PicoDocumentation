@@ -21,7 +21,7 @@ You need a version of Pico AI Server that includes the **MCP** settings tab, and
 5. Optionally paste the server's usage notes into **Instructions** (see [Instructions](#instructions-optional) below).
 6. Click **Save**.
 
-A new server is added enabled. Enabling a server trusts its tools, so only add servers you trust.
+A newly added server is enabled by default. Enabling a server trusts its tools, so only add servers you trust.
 
 ## Authentication
 
