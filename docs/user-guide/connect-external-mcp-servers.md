@@ -49,7 +49,7 @@ Only **enabled** servers are connected and have their tools offered to your mode
 ## Try it now
 
 1. Add and enable an MCP server in the **MCP** tab, then click the refresh button and confirm the row reports a non-zero tool count.
-2. With a tool-capable model installed, ask a question that the server's tools can answer — for example, from the Web Chat or over the API:
+2. With a tool-capable model installed, ask a question that *requires* one of the server's tools, so the answer can only come from a tool call. From the Web Chat or over the API:
 
    ```bash
    curl http://127.0.0.1:11434/v1/chat/completions \
@@ -57,12 +57,14 @@ Only **enabled** servers are connected and have their tools offered to your mode
      -d '{
        "model": "MODEL_NAME",
        "messages": [
-         { "role": "user", "content": "Use the connected tool to look this up, then answer." }
+         { "role": "user", "content": "YOUR_QUESTION" }
        ]
      }'
    ```
 
-   Replace `MODEL_NAME` with the ID of an installed tool-capable model — list them with `GET /v1/models`.
+   Replace the two placeholders:
+   - `MODEL_NAME` — the ID of an installed tool-capable model; list them with `GET /v1/models`.
+   - `YOUR_QUESTION` — a request that only a tool from the server you connected can satisfy. For example, if you connected a documentation server such as DeepWiki, ask `Use DeepWiki to summarize the README of the facebook/react repository.`
 
 The tools from your enabled servers are folded into the request across every generation path (OpenAI-compatible chat, Ollama-compatible, and the OpenResponses path used by the Web Chat).
 
