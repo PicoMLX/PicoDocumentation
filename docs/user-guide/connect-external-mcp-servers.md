@@ -8,7 +8,7 @@ Pico AI Server can act as a **Model Context Protocol (MCP) client**: connect it 
 
 This is the opposite direction from exposing Pico's own tools. Connecting external servers is covered here; letting other apps reach *your* enabled tools is covered in [Enable Built-in Tools](./enable-built-in-tools.md). Both live in the **MCP** settings tab.
 
-You need a version of Pico AI Server that includes the **MCP** settings tab, and the HTTP(S) URL of an MCP server. Pico connects to **HTTP(S) endpoints only** — to reach a stdio-only server, put a gateway such as `mcp-remote` in front of it.
+You need a version of Pico AI Server that includes the **MCP** settings tab, and the HTTP(S) URL of an MCP server. Pico connects to **HTTP(S) endpoints only**. To use a stdio-only MCP server, run a gateway that exposes it over HTTP or SSE (Streamable HTTP), then point Pico at the gateway's URL rather than at the stdio server directly.
 
 ## Add a server
 
@@ -29,7 +29,7 @@ The **Authentication** picker offers three options:
 
 - **None** — no credentials are sent.
 - **Bearer Token** — paste an access token. It is sent as an `Authorization: Bearer` header and stored in the system keychain, never in the app's database.
-- **OAuth** — sign in through your browser after saving. Pico registers itself with the server automatically (OAuth 2.1 with PKCE), and tokens are stored in the keychain.
+- **OAuth** — sign in through your browser after saving. Pico registers itself with the server automatically using dynamic client registration (OAuth 2.1 with PKCE), and tokens are stored in the keychain. This requires the server to advertise a client-registration endpoint; see [Troubleshooting](#troubleshooting) if sign-in reports that it does not.
 
 For an OAuth server, save it first, then open it again from the server list to **Sign In**. The Authentication section shows whether you are signed in and lets you **Sign Out**; signing out drops the stored tokens and registration so your next sign-in can use a different account.
 
@@ -77,3 +77,27 @@ The tools from your enabled servers are folded into the request across every gen
 - Enabling a server trusts its tools; add only servers you control or trust.
 - Credentials (bearer tokens and OAuth sessions) are kept in the system keychain, not in the app's database, and are removed when you delete the server.
 - Server **Instructions** are treated as text only and are never executed.
+
+## Troubleshooting
+
+**Refresh shows zero tools, or the server won't connect.**
+
+- Confirm the **Endpoint URL** is the server's MCP endpoint (often ending in `/mcp`) and is reachable over HTTP(S) from this Mac.
+- Make sure the server's toggle is on, then click the refresh button in the **External MCP Servers** header to reconnect and re-count tools.
+- If the server needs credentials, check the **Authentication** section: a bearer token must be current, and an OAuth server must be signed in.
+
+**OAuth sign-in fails.**
+
+- Pico completes OAuth using dynamic client registration. If the server does not advertise a client-registration endpoint, sign-in fails with a message such as "The server doesn't advertise a client registration endpoint, and no client ID is configured," and Pico cannot connect to that server over OAuth.
+- If sign-in was canceled or interrupted, reopen the server and check whether it shows **Signed in**; if not, sign in again.
+
+**The model doesn't use the server's tools.**
+
+- Verify the server is enabled and its row reports a tool count greater than zero.
+- Use a model that supports tool (function) calling — a model without tool support never calls external tools.
+- Tools from enabled servers are added on every generation path (OpenAI-compatible chat, Ollama-compatible, and OpenResponses), so confirm your request reached one of those endpoints.
+
+## Next steps
+
+- Turn Pico's own tools into an MCP server for other apps: [Enable Built-in Tools](./enable-built-in-tools.md).
+- Share Pico safely on your network before exposing tools: [LAN Sharing Basics](./networking/lan-sharing-basics.md).
