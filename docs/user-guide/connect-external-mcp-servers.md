@@ -81,7 +81,7 @@ The tools from your enabled servers are folded into the request across every gen
 - Enabling a server trusts its tools; add only servers you control or trust.
 - Credentials (bearer tokens and OAuth sessions) are kept in the system keychain, not in the app's database, and are removed when you delete the server.
 - Server **Instructions** are treated as text only and are never executed. Still, review them before pasting — they steer the model as prompt content (see [Instructions](#instructions-optional)).
-- An enabled server's tools run on behalf of **any** client that can send prompts to Pico — including clients on your LAN — using your stored credentials for that server. A prompt from any such client can make the model call the server's tools as that account. If you share Pico on a network, require an API key in the **Users** tab, and enable only servers whose actions you are comfortable exposing to every connected client.
+- An enabled server's tools run on behalf of **any** client that can send prompts to Pico — including clients on your LAN — using your stored credentials for that server. A prompt from any such client can make the model call the server's tools as that account. If you share Pico on a network, enable user accounts and require an API key in the **Users** tab — this turns on bearer-token enforcement, which is off by default — and enable only servers whose actions you are comfortable exposing to every connected client.
 
 ## Troubleshooting
 
