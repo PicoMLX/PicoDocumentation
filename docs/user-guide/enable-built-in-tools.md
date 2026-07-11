@@ -55,7 +55,7 @@ The model calls the System Info tool and answers with your machine's model, chip
 
 ## Expose your tools to MCP clients
 
-The **MCP** tab has an **Expose enabled tools to MCP clients** toggle. Turn it on to let external MCP clients reach the tools you have enabled, in addition to your own models using them during generation. A client connects over the same HTTP(S) address you share for the server, so it must be able to reach that endpoint on your network.
+The **MCP** tab has an **Expose enabled tools to MCP clients** toggle. Turn it on to let external MCP clients reach the tools you have enabled, in addition to your own models using them during generation. A client connects to Pico's MCP endpoint at `http://SERVER:11434/mcp` (replace `SERVER` with the address you share, and `11434` if you changed the port), so it must be able to reach that endpoint on your network.
 
 Your enabled tools — built-in tools included — are what get exposed. Tools you leave off are never offered.
 

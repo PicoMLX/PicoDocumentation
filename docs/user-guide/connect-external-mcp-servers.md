@@ -8,7 +8,7 @@ Pico AI Server can act as a **Model Context Protocol (MCP) client**: connect it 
 
 This is the opposite direction from exposing Pico's own tools. Connecting external servers is covered here; letting other apps reach *your* enabled tools is covered in [Enable Built-in Tools](./enable-built-in-tools.md). Both live in the **MCP** settings tab.
 
-You need a version of Pico AI Server that includes the **MCP** settings tab, and the HTTP(S) URL of an MCP server. Pico connects to **HTTP(S) endpoints only**. To use a stdio-only MCP server, run a gateway that exposes it over HTTP or SSE (Streamable HTTP), then point Pico at the gateway's URL rather than at the stdio server directly.
+You need a version of Pico AI Server that includes the **MCP** settings tab, and the HTTP(S) URL of an MCP server. Pico connects over the **Streamable HTTP** MCP transport (HTTP(S) endpoints only). To use a stdio-only MCP server, run a gateway that exposes it over Streamable HTTP, then point Pico at the gateway's URL rather than at the stdio server directly. A legacy SSE-only endpoint may not connect.
 
 ## Add a server
 
@@ -36,6 +36,8 @@ For an OAuth server, save it first, then open it again from the server list to *
 ## Instructions (optional)
 
 The **Instructions** field holds free-form usage notes for the server — for example, the contents of its `SKILL.md`. Pico stores the text as-is and prepends it as a system message to guide the model whenever the server is enabled. The text is used only as guidance; scripts are never run.
+
+Because these instructions become part of the model's system prompt, paste only notes from a server you trust, and review them first. Like any prompt content, broad or malicious instructions can steer the model's behavior and tool calls on later requests — even though the text itself is never executed.
 
 ## Enable, test, and edit servers
 
@@ -78,7 +80,8 @@ The tools from your enabled servers are folded into the request across every gen
 
 - Enabling a server trusts its tools; add only servers you control or trust.
 - Credentials (bearer tokens and OAuth sessions) are kept in the system keychain, not in the app's database, and are removed when you delete the server.
-- Server **Instructions** are treated as text only and are never executed.
+- Server **Instructions** are treated as text only and are never executed. Still, review them before pasting — they steer the model as prompt content (see [Instructions](#instructions-optional)).
+- An enabled server's tools run on behalf of **any** client that can send prompts to Pico — including clients on your LAN — using your stored credentials for that server. A prompt from any such client can make the model call the server's tools as that account. If you share Pico on a network, require an API key in the **Users** tab, and enable only servers whose actions you are comfortable exposing to every connected client.
 
 ## Troubleshooting
 
