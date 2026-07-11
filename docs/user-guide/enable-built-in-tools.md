@@ -6,7 +6,7 @@ description: Turn on Pico AI Server's built-in tools, including the system info 
 
 Pico AI Server ships with **built-in tools** that a model can call during a conversation. When a tool-capable model decides it needs one, Pico AI Server runs the tool locally and feeds the result back into the model's answer — no external service required.
 
-Built-in tools are separate from the tools you connect through the Model Context Protocol (MCP). MCP connects Pico to *external* servers; built-in tools run *inside* Pico AI Server. Both are managed in Pico's settings, in the **Tools** tab, where you enable or disable them as needed.
+Built-in tools are separate from the tools you connect through the Model Context Protocol (MCP). MCP connects Pico to *external* servers; built-in tools run *inside* Pico AI Server. You manage built-in tools in the **Tools** tab, where you enable or disable them as needed; external MCP servers are managed in the **MCP** tab.
 
 This page shows how to enable built-in tools and uses the **System Info** tool as the worked example. You need a version of Pico AI Server that includes the **Tools** settings tab, and a model that supports tool (function) calling.
 
@@ -55,9 +55,11 @@ The model calls the System Info tool and answers with your machine's model, chip
 
 ## Expose your tools to MCP clients
 
-The **Tools** tab also has an **Expose enabled tools to MCP clients** toggle. Turn it on to let external MCP clients reach the tools you have enabled, in addition to your own models using them during generation.
+The **MCP** tab has an **Expose enabled tools to MCP clients** toggle. Turn it on to let external MCP clients reach the tools you have enabled, in addition to your own models using them during generation. A client connects to Pico's MCP endpoint at `http://SERVER:11434/mcp` (replace `SERVER` with the address you share, and `11434` if you changed the port), so it must be able to reach that endpoint on your network.
 
 Your enabled tools — built-in tools included — are what get exposed. Tools you leave off are never offered.
+
+Exposing your tools and connecting to *external* MCP servers are separate features that live in the same **MCP** tab. To use tools from another server inside Pico, see [Connect External MCP Servers](./connect-external-mcp-servers.md).
 
 ## Privacy and LAN access
 

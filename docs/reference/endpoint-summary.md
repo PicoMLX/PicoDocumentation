@@ -56,5 +56,5 @@ If Pico AI Server is running, you get JSON back.
 
 ## Edge cases
 - `GET /api/chat/completions` exists, but it is an internal helper that returns an empty `200` JSON body. Do not use it as the public Chat Completions route.
-- The router does not currently attach the auth middleware. Do not assume bearer-token enforcement unless your deployment adds it.
+- The auth middleware is attached, but it enforces bearer-token authentication only when user accounts are enabled (the **Users** tab). With user accounts off it short-circuits, so requests are not authenticated. Do not assume bearer-token enforcement unless user accounts are enabled (or your deployment adds its own).
 - `Serve Pico web chat` is present in settings, but the current build still serves the root WebUI unconditionally. Treat that toggle as under validation.

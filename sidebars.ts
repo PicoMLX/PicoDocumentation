@@ -36,7 +36,10 @@ const sidebars: SidebarsConfig = {
     {
       type: 'category',
       label: 'MCP & Tools',
-      items: ['user-guide/enable-built-in-tools'],
+      items: [
+        'user-guide/enable-built-in-tools',
+        'user-guide/connect-external-mcp-servers',
+      ],
     },
     {
       type: 'category',
