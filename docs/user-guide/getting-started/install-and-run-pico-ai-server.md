@@ -11,7 +11,7 @@ Pico AI Server is a macOS app for Apple Silicon Macs — it runs models with MLX
 
 1. Launch Pico AI Server.
 2. Complete the first-run flow.
-   The onboarding flow can set `Allow notifications`, `Allow local network connections`, `Broadcast Bonjour`, `Open at login`, and `Prevent sleep`.
+   The onboarding flow lets you configure `Allow notifications`, `Allow local network connections`, `Broadcast Bonjour`, `Open at login`, and `Prevent sleep`.
 3. Open the WebUI at `http://127.0.0.1:11434/`.
    The onboarding flow normally opens this address for you after setup.
 4. If you want LAN access, leave `Allow local network connections` on.
@@ -20,7 +20,7 @@ Pico AI Server is a macOS app for Apple Silicon Macs — it runs models with MLX
    With that setting off, Pico AI Server binds to `127.0.0.1`.
 6. Use the menu extra when you need quick control.
    When the server is running, it shows the status, a `Start` or `Stop` button, and an IP-based server address with a copy button.
-   The `Memory` section breaks down memory use across `Apps`, `MLX`, and `Free` with a bar and legend, and shows a memory `Pressure` indicator. Use the `GB`/`%` button in the `Memory` header to switch the legend between gigabytes and percentages.
+   The `Memory` section breaks down memory usage across `Apps`, `MLX`, and `Free` with a bar and legend, and shows a memory `Pressure` indicator. Use the `GB`/`%` button in the `Memory` header to toggle the legend between gigabytes and percentages.
 
 ## Verify it worked
 
