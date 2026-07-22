@@ -12,7 +12,7 @@ You can change every choice later in the app's Settings window, so pick sensible
 1. Launch Pico AI Server.
 2. On the **Welcome** page, review the summary and continue.
    This page introduces Pico AI Server and links to the privacy policy and terms.
-3. On the **Model** page ("Choose your first model"), pick a model, then continue.
+3. On the **Model** page ("Choose your first model"), pick a model (or skip it), then continue.
    - Pico shows a short list of options — such as **Fast**, **Balanced**, and **Reasoning** — sized for your Mac's memory.
    - One selectable option is preselected and marked **Recommended** for this Mac; the page subtitle names it (for example, "Balanced is recommended for this Mac. You can add or switch models later.").
    - Each selectable option shows its model name and total download size. An option that isn't available yet is labeled **Coming soon**, and one that needs more memory than your Mac has shows its RAM requirement instead — neither can be selected.
@@ -23,7 +23,7 @@ You can change every choice later in the app's Settings window, so pick sensible
    - **Devices on my local network** — any device on your network can use Pico. Pico binds to `0.0.0.0`.
    - When you choose local-network access, a **Make Pico discoverable automatically** toggle appears. Turn it on to advertise the server over Bonjour so Pico clients and other Pico servers can find it without typing an address.
 5. On the **Ready** page, review the live server details, then select **Open Chat**.
-   - The page shows the real server state: a status dot, the model, the access scope you chose, and the server address.
+   - The page shows the real server state: a status dot, the model you chose (when you picked one), the access scope you chose, and the server address.
    - Select the copy button next to **Address** to copy the server address.
    - **Open Chat** finishes setup, applies your choices, and opens the browser chat. If a model download is still in progress, Pico opens a page that tracks the download instead.
 
