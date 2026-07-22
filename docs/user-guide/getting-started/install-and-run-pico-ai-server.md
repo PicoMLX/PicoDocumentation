@@ -10,10 +10,10 @@ Pico AI Server is a macOS app for Apple Silicon Macs — it runs models with MLX
 ## Start the server
 
 1. Launch Pico AI Server.
-2. Complete the first-run flow.
-   The onboarding flow lets you configure `Allow notifications`, `Allow local network connections`, `Broadcast Bonjour`, `Open at login`, and `Prevent sleep`.
+2. Complete the first-run setup.
+   The setup wizard has four pages — Welcome, Model, Access, and Ready. It downloads a first model, chooses who can connect, and starts the server for you. For a step-by-step walkthrough, see [First-Run Setup](./first-run-setup.md).
 3. Open the WebUI at `http://127.0.0.1:11434/`.
-   The onboarding flow normally opens this address for you after setup.
+   The setup wizard normally opens this address for you when you finish.
 4. If you want LAN access, leave `Allow local network connections` on.
    With that setting on, Pico AI Server binds to `0.0.0.0`.
 5. If you want local-only access, turn `Allow local network connections` off in the native app settings.

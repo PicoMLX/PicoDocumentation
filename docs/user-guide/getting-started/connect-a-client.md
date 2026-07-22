@@ -1,6 +1,6 @@
 ---
 title: Connect a Client
-sidebar_position: 3
+sidebar_position: 4
 ---
 
 Use this page when another app needs to talk to Pico AI Server. The job is to copy the right server address, choose the correct compatibility layer, and prove the client can list models before you try chat.
