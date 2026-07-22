@@ -1,6 +1,6 @@
 ---
 title: Configure Settings
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 Use this page to set the storage location, network behavior, and browser-chat defaults. Keep the changes small, apply them, and prove the server still responds before you move on.
@@ -22,7 +22,9 @@ Before you start, open the native Pico AI Server app and keep a terminal ready s
    - `Port`
    - `Allow Cross-Origin Resource Sharing (CORS)`
    - `Enable Bonjour broadcasting`
-6. Click `Apply Changes` after network or port changes.
+6. In `Server Mode`, set `Open at Login` and `Prevent automatic sleep while Pico is running` if you want.
+   These two options are configured here rather than during first-run setup. `Open at Login` starts Pico when you log in; `Prevent automatic sleep while Pico is running` keeps the Mac awake so the server stays reachable.
+7. Click `Apply Changes` after network or port changes.
    The app saves the configuration and restarts the server.
 
 ## Verify it worked
