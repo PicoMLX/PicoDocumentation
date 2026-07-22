@@ -3,7 +3,7 @@ title: First-Run Setup
 sidebar_position: 2
 ---
 
-The first time you launch Pico AI Server, a setup wizard walks you through four pages — **Welcome**, **Model**, **Access**, and **Ready**. By the end you have a model downloading (or ready), you have chosen who can reach the server, and the server is running. This page explains each page so you know what every choice does.
+The first time you launch Pico AI Server, a setup wizard walks you through four pages — **Welcome**, **Model**, **Access**, and **Ready**. By the end you have chosen who can reach the server and the server is running; if you picked a model, it is downloading or already ready (you can also skip that step and add a model later). This page explains each page so you know what every choice does.
 
 You can change every choice later in the app's Settings window, so pick sensible defaults now and move on.
 
