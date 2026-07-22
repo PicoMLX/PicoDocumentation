@@ -14,9 +14,9 @@ You can change every choice later in the app's Settings window, so pick sensible
    This page introduces Pico AI Server and links to the privacy policy and terms.
 3. On the **Model** page ("Choose your first model"), pick a model, then continue.
    - Pico shows a short list of options — such as **Fast**, **Balanced**, and **Reasoning** — sized for your Mac's memory.
-   - One option is preselected and marked **Recommended** for this Mac; the page subtitle names it (for example, "Balanced is recommended for this Mac. You can add or switch models later.").
-   - Each row shows the model name and its total download size.
-   - The continue button reflects your choice: **Download _tier_ · _size_** for a model that is not on disk yet, or **Use _tier_** for one you already have.
+   - One selectable option is preselected and marked **Recommended** for this Mac; the page subtitle names it (for example, "Balanced is recommended for this Mac. You can add or switch models later.").
+   - Each selectable option shows its model name and total download size. An option that isn't available yet is labeled **Coming soon**, and one that needs more memory than your Mac has shows its RAM requirement instead — neither can be selected.
+   - For a selectable option, the continue button reflects your choice: **Download _tier_ · _size_** for a model that is not on disk yet, or **Use _tier_** for one you already have.
    - You can continue without choosing. If no model is available yet, Pico asks you to confirm, and you can download one later in Settings.
 4. On the **Access** page ("Choose who can connect"), pick one option, then continue.
    - **This Mac only** — the most private choice. Only apps on this Mac can connect. Pico binds to `127.0.0.1`.
