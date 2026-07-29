@@ -1,6 +1,6 @@
 ---
 title: Configure Settings
-sidebar_position: 2
+sidebar_position: 3
 ---
 
 Use this page to set the storage location, network behavior, and browser-chat defaults. Keep the changes small, apply them, and prove the server still responds before you move on.
