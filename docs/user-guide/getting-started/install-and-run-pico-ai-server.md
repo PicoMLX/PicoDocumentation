@@ -20,6 +20,7 @@ Pico AI Server is a macOS app for Apple Silicon Macs — it runs models with MLX
    With that setting off, Pico AI Server binds to `127.0.0.1`.
 6. Use the menu extra when you need quick control.
    When the server is running, it shows the status, a `Start` or `Stop` button, and an IP-based server address with a copy button.
+   The menu extra also has a `Memory` section with a usage bar and legend. The legend breaks memory into `Apps` (everything other than the models), `MLX` (memory the loaded models are actively using), `Cache` (reclaimable MLX memory, which the system can free under pressure — shown only when there is reclaimable memory), and `Free`, alongside a memory `Pressure` indicator. Use the `GB` / `%` button to switch the legend between gigabytes and percentages.
 
 ## Verify it worked
 
