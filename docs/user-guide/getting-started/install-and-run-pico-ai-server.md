@@ -9,16 +9,21 @@ Pico AI Server is a macOS app for Apple Silicon Macs — it runs models with MLX
 
 ## Start the server
 
-1. Launch Pico AI Server.
-2. Complete the first-run flow.
-   The onboarding flow can set `Allow local network connections`, `Broadcast Bonjour`, `Open at login`, and `Prevent sleep`.
-3. Open the WebUI at `http://127.0.0.1:11434/`.
-   The onboarding flow normally opens this address for you after setup.
-4. If you want LAN access, leave `Allow local network connections` on.
-   With that setting on, Pico AI Server binds to `0.0.0.0`.
-5. If you want local-only access, turn `Allow local network connections` off in the native app settings.
-   With that setting off, Pico AI Server binds to `127.0.0.1`.
-6. Use the menu extra when you need quick control.
+On first launch, a short setup wizard walks you through four steps — **Welcome**, **Choose your first model**, **Choose who can connect**, and **Ready**.
+
+1. Launch Pico AI Server and click `Set up Pico` on the Welcome screen.
+2. On the model step, pick the model recommended for your Mac, choose a different one, or skip and add one later in Settings.
+   If you start a download, it continues in the background while you finish setup.
+3. On the access step, choose who can reach the server:
+   - `This Mac only` — Pico AI Server binds to `127.0.0.1`, so only apps on this Mac can connect.
+   - `Devices on my local network` — Pico AI Server binds to `0.0.0.0`, so other devices on your network can connect. Turn on the Bonjour option here if you want Pico AI Server to be discoverable automatically.
+
+   You can change this later in Settings.
+4. On the `Ready` step, click `Start server`.
+   This saves your choices, starts the server, and confirms it is reachable. Navigating through the wizard never starts or stops the server — nothing runs until you click `Start server`.
+5. Click `Open Chat` to open the WebUI at `http://127.0.0.1:11434/`.
+   If a model is still downloading, Pico AI Server shows a download-progress page until it is ready.
+6. Use the menu extra when you need quick control afterward.
    When the server is running, it shows the status, a `Start` or `Stop` button, and an IP-based server address with a copy button.
 
 ## Verify it worked
@@ -41,7 +46,10 @@ curl http://127.0.0.1:11434/hostname
 
 - **Symptom:** The browser opens a blank page or cannot connect.
   **Cause:** The server is not running yet.
-  **Fix:** Use the native app or the menu extra to start the server, then reload the page.
+  **Fix:** Finish setup by clicking `Start server` on the `Ready` step, or use the menu extra to start the server, then reload the page.
+- **Symptom:** During setup, the `Ready` step reports that the server didn't respond and shows a `Try again` button.
+  **Cause:** Another app may be using port `11434`, or the server didn't come up in time.
+  **Fix:** Quit the app that is using the port (or change the port in Settings), then click `Try again`.
 - **Symptom:** Another device on your LAN cannot connect.
   **Cause:** `Allow local network connections` is off, or the network blocks device-to-device traffic.
   **Fix:** Turn the setting on and test again from the other device.
