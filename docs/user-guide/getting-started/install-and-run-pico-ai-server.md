@@ -43,9 +43,9 @@ curl http://127.0.0.1:11434/hostname
 - **Symptom:** The browser opens a blank page or cannot connect.
   **Cause:** The server is not running yet.
   **Fix:** Use the native app or the menu extra to start the server, then reload the page.
-- **Symptom:** The `Start` or `Stop` button in the menu extra is greyed out and clicking it does nothing.
+- **Symptom:** The `Start` or `Stop` button in the menu extra is grayed out and clicking it does nothing.
   **Cause:** The server is mid-transition — the status shows `Starting…` or `Stopping…`, and the control is disabled while a start or stop is in flight.
-  **Fix:** Wait for the status to settle on `Server Running` or `Server Stopped`; the button re-enables on its own.
+  **Fix:** Wait for the status to settle, then click again. When it reads `Server Running` or `Server Stopped`, the button re-enables on its own. If it instead reads `Server Error` (red dot), the last start or stop failed — click `Start` to try again, or open the native app to see the reported error.
 - **Symptom:** Another device on your LAN cannot connect.
   **Cause:** `Allow local network connections` is off, or the network blocks device-to-device traffic.
   **Fix:** Turn the setting on and test again from the other device.
