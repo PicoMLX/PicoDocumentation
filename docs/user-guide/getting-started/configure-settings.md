@@ -23,7 +23,7 @@ Before you start, open the native Pico AI Server app and keep a terminal ready s
    - `Allow Cross-Origin Resource Sharing (CORS)`
    - `Enable Bonjour broadcasting`
 6. Click `Apply Changes` after network or port changes.
-   The app saves the configuration and restarts the server.
+   The app saves the configuration and restarts the server. While that restart is in flight, `Apply Changes` is disabled until the server finishes coming back up.
 
 ## Verify it worked
 
