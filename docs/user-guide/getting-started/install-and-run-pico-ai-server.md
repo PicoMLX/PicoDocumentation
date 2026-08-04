@@ -20,6 +20,7 @@ Pico AI Server is a macOS app for Apple Silicon Macs — it runs models with MLX
    With that setting off, Pico AI Server binds to `127.0.0.1`.
 6. Use the menu extra when you need quick control.
    When the server is running, it shows the status, a `Start` or `Stop` button, and an IP-based server address with a copy button.
+   While the server is starting up or shutting down, the status reads `Starting…` or `Stopping…` and the `Start`/`Stop` button is disabled until the transition finishes.
 
 ## Verify it worked
 
@@ -42,6 +43,9 @@ curl http://127.0.0.1:11434/hostname
 - **Symptom:** The browser opens a blank page or cannot connect.
   **Cause:** The server is not running yet.
   **Fix:** Use the native app or the menu extra to start the server, then reload the page.
+- **Symptom:** The `Start` or `Stop` button in the menu extra is greyed out and clicking it does nothing.
+  **Cause:** The server is mid-transition — the status shows `Starting…` or `Stopping…`, and the control is disabled while a start or stop is in flight.
+  **Fix:** Wait for the status to settle on `Server Running` or `Server Stopped`; the button re-enables on its own.
 - **Symptom:** Another device on your LAN cannot connect.
   **Cause:** `Allow local network connections` is off, or the network blocks device-to-device traffic.
   **Fix:** Turn the setting on and test again from the other device.
