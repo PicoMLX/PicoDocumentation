@@ -51,7 +51,14 @@ Pico AI Server attaches a bearer-token auth middleware to every route. Whether i
 - **Off (the default):** requests are not authenticated. Any client can call the API without credentials.
 - **On:** every request must present a valid key, supplied as either an `Authorization: Bearer <token>` header or an `X-API-Key: <token>` header. The `X-API-Key` form is for Anthropic SDK compatibility and uses the same user tokens as Bearer auth. A missing, malformed, or disabled-user token gets a `401` with a `WWW-Authenticate: Bearer realm="PicoServer"` header.
 
-A few routes stay reachable without a key even when enforcement is on: `HEAD /` and other reachability checks, `OPTIONS` (CORS preflight) requests, static WebUI assets (`/`, `/index.html`, `/locales/*`, and known asset file types), and `/api/download-status`.
+A fixed set of routes stays reachable without a key even when enforcement is on:
+
+- `HEAD /` — root reachability check.
+- `OPTIONS` on any path — CORS preflight.
+- Static WebUI assets — `/`, `/index.html`, `/loading.html`, `/onboarding-download.html`, any `/locales/*` path, and any path ending in a known web-asset extension (`.js`, `.css`, `.gz`, `.html`, `.svg`, `.png`, `.jpg`, `.jpeg`, `.gif`, `.webp`, `.ico`, `.woff`, `.woff2`, `.ttf`, `.map`, `.json`).
+- `GET /api/download-status`.
+
+Everything else requires a key when enforcement is on. In particular, the utility routes `GET /hostname` and `GET /ip` are **not** exempt.
 
 ## Errors
 
