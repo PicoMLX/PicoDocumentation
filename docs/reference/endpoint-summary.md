@@ -44,11 +44,21 @@ curl http://127.0.0.1:11434/v1/models
 
 If Pico AI Server is running, you get JSON back.
 
+## Authentication
+
+Pico AI Server attaches a bearer-token auth middleware to every route. Whether it enforces anything is controlled by the **Require API key** toggle in the **Users** tab of Settings:
+
+- **Off (the default):** requests are not authenticated. Any client can call the API without credentials.
+- **On:** every request must present a valid key, supplied as either an `Authorization: Bearer <token>` header or an `X-API-Key: <token>` header. The `X-API-Key` form is for Anthropic SDK compatibility and uses the same user tokens as Bearer auth. A missing, malformed, or disabled-user token gets a `401` with a `WWW-Authenticate: Bearer realm="PicoServer"` header.
+
+A few routes stay reachable without a key even when enforcement is on: `HEAD /` and other reachability checks, `OPTIONS` (CORS preflight) requests, static WebUI assets (`/`, `/index.html`, `/locales/*`, and known asset file types), and `/api/download-status`.
+
 ## Errors
 
 | Status | Meaning | Notes |
 | --- | --- | --- |
 | `400` | Invalid request | Used for bad JSON, empty chat messages, and other request-shape problems |
+| `401` | Unauthorized | Returned when **Require API key** is enabled and the request has a missing, malformed, or disabled-user token |
 | `404` | Not found | Used for missing models on most request paths |
 | `408` | Request timeout | Used when generation is canceled |
 | `409` | Conflict | Used for incomplete model states on some paths |
@@ -56,5 +66,5 @@ If Pico AI Server is running, you get JSON back.
 
 ## Edge cases
 - `GET /api/chat/completions` exists, but it is an internal helper that returns an empty `200` JSON body. Do not use it as the public Chat Completions route.
-- The router does not currently attach the auth middleware. Do not assume bearer-token enforcement unless your deployment adds it.
+- Bearer-token enforcement is off by default. Do not assume requests are authenticated unless the admin has turned on **Require API key** (Users tab) — see [Authentication](#authentication).
 - `Serve Pico web chat` is present in settings, but the current build still serves the root WebUI unconditionally. Treat that toggle as under validation.

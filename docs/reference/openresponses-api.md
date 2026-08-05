@@ -93,7 +93,7 @@ The stream uses `text/event-stream`. The current implementation emits standard r
 | Status | `error.code` | Notes |
 | --- | --- | --- |
 | `400` | `invalid_request_error` | Invalid request shape or empty input |
-| `401` | `authentication_error` | Reserved for auth failures |
+| `401` | `authentication_error` | Missing or invalid API key when **Require API key** is enabled (Users tab) |
 | `404` | `not_found` | Not found |
 | `408` | `request_timeout` | Generation canceled or timed out |
 | `409` | `conflict` | Conflict state |

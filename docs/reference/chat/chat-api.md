@@ -184,6 +184,7 @@ Ollama-compatible streaming uses `application/x-ndjson`.
 | Status | OpenAI-compatible error type | Typical cause |
 | --- | --- | --- |
 | `400` | `invalid_request_error` | Empty `messages`, bad JSON, unsupported request shape |
+| `401` | `authentication_error` | Missing or invalid API key when **Require API key** is enabled (Users tab) |
 | `404` | `not_found_error` | Model not found |
 | `408` | `invalid_request_error` | Generation canceled |
 | `409` | `invalid_request_error` | Model is incomplete |
