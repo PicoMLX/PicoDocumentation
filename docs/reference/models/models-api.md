@@ -177,6 +177,7 @@ Notes
 
 | Status | Meaning | Notes |
 | --- | --- | --- |
+| `401` | Unauthorized | Returned before handler logic when **Require API key** is enabled and the request has a missing, malformed, or disabled-user token; applies to all model routes. See [Authentication](../endpoint-summary.md#authentication) |
 | `500` | Server could not read model metadata | Applies to all model routes when the local model store fails |
 
 ## Edge cases
