@@ -43,7 +43,7 @@ When you grant a working directory, Browser Tools can create, write to, and edit
 
 You stay in control of each run:
 
-- The assistant asks before it runs a tool. Approve a single call with `Allow once`, or open `More allow options` for broader choices, and deny a call to stop it.
+- Some tools ask before they run — Browser Tools that touch your files in particular. Approve a single call with `Allow once`, open `More allow options` for broader choices, or deny a call to stop it. Server Tools run inside Pico AI Server and are executed for the model without a per-call prompt.
 - If a run reaches the agentic-turn limit, the WebUI pauses and asks whether to continue.
 - To see what the tools did, turn on `Always show tool call content` in settings; `Show statistics for individual agentic turns` adds per-turn timing.
 
@@ -54,12 +54,13 @@ Browser Tools run in your browser against a folder you pick, while Server Tools 
 The `System Info` Server Tool is the simplest tool to confirm end to end, because its answer is checkable against your own machine.
 
 1. Pick a tool-capable model in the model selector.
-2. Enable `System Info` in the native app's `Tools` tab (see [Enable Built-in Tools](../enable-built-in-tools.md)) so it is offered to the model.
+2. Enable `System Info` in the native app's `Tools` tab so it is offered to the model. Because it reports host details, enable it only on a trusted machine, and if you share Pico AI Server over a LAN, require an API key first — see [Enable Built-in Tools](../enable-built-in-tools.md).
 3. Turn on `Always show tool call content` in settings so you can watch the call.
 4. Ask a question that needs the tool, for example: `What Mac and chip am I running on, and how much RAM does it have?`
-5. When the assistant asks to run the tool, approve it with `Allow once`.
 
-**Verify it worked:** the reply names your actual Mac model, chip, and RAM instead of guessing, and the transcript shows the `System Info` call with its result. Turn the tool off and ask again — the same question can no longer be answered from live host data.
+`System Info` is a Server Tool, so it runs inside Pico AI Server without a per-call approval prompt.
+
+**Verify it worked:** the reply names your actual Mac model, chip, and RAM instead of guessing, and the transcript shows the `System Info` call with its result. To confirm the tool — not the earlier transcript — produced that data, turn `System Info` off, start a new conversation, and ask again: the fresh chat can no longer answer from live host data.
 
 ## Manage conversations
 
