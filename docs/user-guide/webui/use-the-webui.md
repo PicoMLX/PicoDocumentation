@@ -54,7 +54,7 @@ Browser Tools run in your browser against a folder you pick, while Server Tools 
 The `System Info` Server Tool is the simplest tool to confirm end to end, because its answer is checkable against your own machine.
 
 1. Pick a tool-capable model in the model selector.
-2. Make the tool available: enable `System Info` in the native app's `Tools` tab (see [Enable Built-in Tools](../enable-built-in-tools.md)). For an MCP Tool instead, connect the server in the WebUI's `MCP` settings section.
+2. Enable `System Info` in the native app's `Tools` tab (see [Enable Built-in Tools](../enable-built-in-tools.md)) so it is offered to the model.
 3. Turn on `Always show tool call content` in settings so you can watch the call.
 4. Ask a question that needs the tool, for example: `What Mac and chip am I running on, and how much RAM does it have?`
 5. When the assistant asks to run the tool, approve it with `Allow once`.
