@@ -38,11 +38,18 @@ Use this page as the cheat sheet for the current HTTP surface in Pico AI Server.
 
 ## Example
 
+With **Require API key** off (the default), an unauthenticated request works:
+
 ```bash
 curl http://127.0.0.1:11434/v1/models
 ```
 
-If Pico AI Server is running, you get JSON back.
+If Pico AI Server is running, you get JSON back. When **Require API key** is on, add an enabled user's key (replace `YOUR_API_KEY`); see [Require an API Key](../user-guide/access/require-an-api-key.md):
+
+```bash
+curl http://127.0.0.1:11434/v1/models \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
 
 ## Errors
 

@@ -14,7 +14,7 @@ Enforcement is off until you turn it on. While it is off, API keys can exist but
 2. Select the **Users** tab.
 3. Add at least one user first (see below). You need an *enabled* user that has an API key before enforcement can be turned on.
 4. In the **Authentication** section, turn on **Require API key**.
-   With it on, every API request must include an enabled user's API key. With it off, keys are accepted but not required, and requests run as the built-in user.
+   With it on, every API request must include an enabled user's API key. With it off, any key on a request is ignored and every request runs as the built-in user.
 
 ## Add a user
 
@@ -34,40 +34,48 @@ Each row in the **Users** table has an actions menu (**…**):
 
 To read or copy an existing key, use the show/hide (eye) and copy buttons in the **API key** column. Admin users are marked with a key icon next to their name.
 
+:::caution
+An API key is a credential: it authorizes every request made on the user's behalf until you regenerate it. **Send invite email** puts the key in an ordinary email, so anyone who receives or forwards that message can use it. Share keys only through a trusted channel, and **regenerate** a user's key immediately if you suspect it was exposed.
+:::
+
 ## How clients authenticate
 
-When **Require API key** is on, each request must carry the key in one of two headers:
+When **Require API key** is on, each request must carry an enabled user's key in one of two headers — `Authorization: Bearer <key>` or `X-API-Key: <key>` (the `X-API-Key` form is for Anthropic-style SDKs). A request that is missing a key, or carries an invalid, disabled, or malformed one, gets `401 Unauthorized`.
+
+Only the static WebUI shell is exempt: the root page, other static assets, `HEAD /` reachability checks, and CORS preflight (`OPTIONS`) requests load without a key, so the chat page still opens. The model and chat API requests that page makes are **not** exempt — they need a key like any other client, so configure the WebUI with a key when enforcement is on, or its requests get `401`.
+
+## Try it now
+
+Replace `YOUR_API_KEY` with a real key from the **Users** tab — copy it from the **API key** column, or from the sheet shown when you add or regenerate a user. Then send an authenticated request:
 
 ```bash
-# Standard bearer token
 curl http://127.0.0.1:11434/v1/models \
   -H "Authorization: Bearer YOUR_API_KEY"
-
-# X-API-Key (for Anthropic-style SDKs)
-curl http://127.0.0.1:11434/v1/models \
-  -H "X-API-Key: YOUR_API_KEY"
 ```
 
-The browser WebUI and other static assets, `HEAD /` reachability checks, and CORS preflight (`OPTIONS`) requests are exempt, so the root chat page keeps loading. A request that is missing a key, or carries an invalid, disabled, or malformed one, gets `401 Unauthorized`.
+You get the model list back as JSON.
 
 ## Verify it worked
 
-With **Require API key** on, a request without a valid key is rejected, and a request that includes an enabled user's key succeeds:
+With **Require API key** on, a request without a valid key is rejected, and the same request with an enabled user's key succeeds:
 
 ```bash
 # Rejected: no key -> 401
 curl -i http://127.0.0.1:11434/v1/models
 
-# Accepted: with an enabled user's key
+# Accepted: with an enabled user's key (replace YOUR_API_KEY)
 curl http://127.0.0.1:11434/v1/models \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
 ## Troubleshooting
 
-- **Symptom:** You cannot disable or delete a user.
+- **Symptom:** You cannot disable or delete a user, and the message is about the last enabled key holder.
   **Cause:** While **Require API key** is on, Pico will not let you disable or delete the last enabled user that has a key — that would lock every client out.
   **Fix:** Add or enable another user with a key first, or turn off **Require API key** before removing the last one.
+- **Symptom:** You cannot disable or delete a user, and the message says it is the last admin.
+  **Cause:** This is a separate guard from the key requirement. Pico keeps at least one enabled administrator (admins are marked with a key icon), so it can block the change even when another enabled non-admin user still has a key.
+  **Fix:** Make sure another enabled administrator account remains before you disable or delete this one.
 - **Symptom:** **Require API key** shows a warning and refuses to stay on.
   **Cause:** No enabled user has an API key.
   **Fix:** Add a user, or enable one, then turn the setting on.
