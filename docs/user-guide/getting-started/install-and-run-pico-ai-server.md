@@ -13,7 +13,7 @@ Pico AI Server is a macOS app for Apple Silicon Macs — it runs models with MLX
 2. Complete the first-run setup wizard. It has four pages:
    - **Welcome** — a short introduction.
    - **Model** (*Choose your first model*) — pick the model to download. Models are grouped into tiers named **Fast**, **Balanced**, and **Reasoning**; Pico preselects the tier that fits your Mac's RAM and badges it **Recommended**. You can add or switch models later.
-   - **Access** (*Choose who can connect*) — choose **This Mac only** or **Devices on my local network**. Choosing local-network access reveals **Make Pico discoverable automatically** (Bonjour) as a nested option.
+   - **Access** (*Choose who can connect*) — choose **This Mac only** or **Devices on my local network** (which also reveals **Make Pico discoverable automatically**, Bonjour). A fresh install requires no API key, so local-network access opens your models and tools to every device on the LAN. The safe order is: keep **This Mac only** now, [require an API key](../access/require-an-api-key.md), then enable LAN access.
    - **Ready** — shows the live server status, the model, the access scope, and the server address. **Open Chat** finishes setup and opens the WebUI; **Copy address** copies the server address.
 3. Open the WebUI at `http://127.0.0.1:11434/`.
    The Ready page's **Open Chat** button normally opens this address for you.
@@ -22,10 +22,6 @@ Pico AI Server is a macOS app for Apple Silicon Macs — it runs models with MLX
    When the server is running, it shows the status, a `Start` or `Stop` button, and an IP-based server address with a copy button.
 
 Options such as **Open at login** and **Prevent sleep** are not part of the setup wizard. Configure them in the app's **Settings** window instead.
-
-:::caution
-Choosing **Devices on my local network** binds the server to every interface, and a fresh install does **not** require an API key — so any device on the LAN can use your models and tools. Before you share on a network, turn on authentication: see [Require an API Key](../access/require-an-api-key.md).
-:::
 
 ## Verify it worked
 

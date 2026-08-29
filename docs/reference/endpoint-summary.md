@@ -44,11 +44,12 @@ With **Require API key** off (the default), an unauthenticated request works:
 curl http://127.0.0.1:11434/v1/models
 ```
 
-If Pico AI Server is running, you get JSON back. When **Require API key** is on, add an enabled user's key (replace `YOUR_API_KEY`); see [Require an API Key](../user-guide/access/require-an-api-key.md):
+If Pico AI Server is running, you get JSON back. When **Require API key** is on, add an enabled user's key — read it into a variable first so it stays out of your shell history (see [Require an API Key](../user-guide/access/require-an-api-key.md)):
 
 ```bash
+read -rs PICO_API_KEY   # paste the key, then press Enter
 curl http://127.0.0.1:11434/v1/models \
-  -H "Authorization: Bearer YOUR_API_KEY"
+  -H "Authorization: Bearer $PICO_API_KEY"
 ```
 
 ## Errors
