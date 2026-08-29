@@ -46,6 +46,8 @@ curl http://127.0.0.1:11434/v1/chat/completions \
 
 Replace `MODEL_NAME` with the ID of an installed tool-capable model — list them with `GET /v1/models`.
 
+If you have turned on **Require API key** (recommended when sharing on a LAN), also send an enabled user's key by adding `-H "Authorization: Bearer YOUR_API_KEY"` — replace `YOUR_API_KEY` with a key from the **Users** tab. Without it the request gets `401 Unauthorized`. See [Require an API Key](./access/require-an-api-key.md).
+
 The model calls the System Info tool and answers with your machine's model, chip, and memory instead of guessing.
 
 ### Verify it worked
