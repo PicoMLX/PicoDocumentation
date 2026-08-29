@@ -8,6 +8,10 @@ By default, Pico AI Server accepts every request as a built-in user, so anyone w
 
 Enforcement is off until you turn it on. While it is off, API keys can exist but are not checked, and every request is served as the built-in user.
 
+:::caution
+Requiring a key controls **who** can use the server; it does not encrypt traffic. Pico AI Server serves plain `http://`, so a key travels over the network unencrypted, and an untrusted device on the same LAN could capture and replay it. Turn on LAN access only on a network you trust, and regenerate any key you believe was exposed.
+:::
+
 ## Require an API key
 
 1. Open **Settings** in Pico AI Server.

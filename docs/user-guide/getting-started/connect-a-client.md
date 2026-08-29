@@ -32,6 +32,7 @@ Pico AI Server must be running. For another device on your LAN, `Allow local net
    curl http://SERVER:11434/v1/models
    ```
 
+   If the admin has turned on **Require API key**, add an enabled user's key — `-H "Authorization: Bearer YOUR_API_KEY"` — or this request returns `401`. See [Require an API Key](../access/require-an-api-key.md).
 5. If the list loads, move on to chat or responses.
 
 ## Verify it worked
