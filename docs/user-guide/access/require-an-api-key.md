@@ -33,7 +33,7 @@ Each row in the **Users** table has an actions menu (**…**):
 
 - **Send invite email…** — open a pre-filled email with the server address and the user's key.
 - **Regenerate API key…** — issue a new key. The old key stops working immediately, so anywhere it is saved (chat clients, scripts) must be updated.
-- **Disable** / **Enable** — turn a user's access off or back on without deleting them.
+- **Disable** / **Enable** — take a user's key out of service or restore it, without deleting them. Disabling only blocks that person while **Require API key** is on; with enforcement off, every request is still served as the built-in user, so disabling a user does not by itself revoke access.
 - **Delete…** — remove the user and revoke their key immediately.
 
 To read or copy an existing key, use the show/hide (eye) and copy buttons in the **API key** column. Admin users are marked with a key icon next to their name.
@@ -50,11 +50,12 @@ Only the static WebUI shell is exempt: the root page, other static assets, `HEAD
 
 ## Try it now
 
-Replace `YOUR_API_KEY` with a real key from the **Users** tab — copy it from the **API key** column, or from the sheet shown when you add or regenerate a user. Then send an authenticated request:
+Get the key from the **Users** tab — copy it from the **API key** column, or from the sheet shown when you add or regenerate a user. Read it into an environment variable first so the secret stays out of your shell history, then send an authenticated request:
 
 ```bash
+read -rs PICO_API_KEY   # paste the key, then press Enter (input is hidden)
 curl http://127.0.0.1:11434/v1/models \
-  -H "Authorization: Bearer YOUR_API_KEY"
+  -H "Authorization: Bearer $PICO_API_KEY"
 ```
 
 You get the model list back as JSON.
@@ -67,9 +68,9 @@ With **Require API key** on, a request without a valid key is rejected, and the 
 # Rejected: no key -> 401
 curl -i http://127.0.0.1:11434/v1/models
 
-# Accepted: with an enabled user's key (replace YOUR_API_KEY)
+# Accepted: with an enabled user's key (reuses $PICO_API_KEY from above)
 curl http://127.0.0.1:11434/v1/models \
-  -H "Authorization: Bearer YOUR_API_KEY"
+  -H "Authorization: Bearer $PICO_API_KEY"
 ```
 
 ## Troubleshooting

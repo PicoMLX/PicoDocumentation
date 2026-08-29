@@ -23,6 +23,10 @@ Pico AI Server is a macOS app for Apple Silicon Macs — it runs models with MLX
 
 Options such as **Open at login** and **Prevent sleep** are not part of the setup wizard. Configure them in the app's **Settings** window instead.
 
+:::caution
+Choosing **Devices on my local network** binds the server to every interface, and a fresh install does **not** require an API key — so any device on the LAN can use your models and tools. Before you share on a network, turn on authentication: see [Require an API Key](../access/require-an-api-key.md).
+:::
+
 ## Verify it worked
 
 Run:
