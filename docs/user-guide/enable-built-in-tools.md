@@ -64,5 +64,5 @@ Your enabled tools — built-in tools included — are what get exposed. Tools y
 Some tools reveal information about your machine. The **System Info** tool, for example, participates in the LAN-access privacy warning: if you expose Pico AI Server over your local network, enabling it lets connecting clients learn details about your host.
 
 - Enable only the tools you actually need.
-- If you share Pico AI Server on a LAN, require an API key in the **Users** tab so untrusted clients cannot trigger tool calls.
+- If you share Pico AI Server on a LAN, [require an API key](./access/require-an-api-key.md) so untrusted clients cannot trigger tool calls.
 - Review the privacy warning shown in the **Tools** tab before turning on tools that expose host or network information.

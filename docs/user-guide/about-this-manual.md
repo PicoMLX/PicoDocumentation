@@ -23,6 +23,7 @@ Unless a page says otherwise, examples use `http://127.0.0.1:11434` and run on t
 
 - **Getting Started** installs the app, walks through settings, and connects a first client.
 - **Networking & Sharing** covers LAN Mode, server addresses, and Bonjour discovery.
+- **Access & Security** covers user accounts and requiring an API key.
 - **WebUI** covers the built-in browser chat and client-launch options.
 - **Reference** documents the HTTP API surface, endpoint by endpoint.
 

@@ -10,16 +10,18 @@ Pico AI Server is a macOS app for Apple Silicon Macs — it runs models with MLX
 ## Start the server
 
 1. Launch Pico AI Server.
-2. Complete the first-run flow.
-   The onboarding flow can set `Allow local network connections`, `Broadcast Bonjour`, `Open at login`, and `Prevent sleep`.
+2. Complete the first-run setup wizard. It has four pages:
+   - **Welcome** — a short introduction.
+   - **Model** (*Choose your first model*) — pick the model to download. Models are grouped into tiers named **Fast**, **Balanced**, and **Reasoning**; Pico preselects the tier that fits your Mac's RAM and badges it **Recommended**. You can add or switch models later.
+   - **Access** (*Choose who can connect*) — choose **This Mac only** or **Devices on my local network**. Choosing local-network access reveals **Make Pico discoverable automatically** (Bonjour) as a nested option.
+   - **Ready** — shows the live server status, the model, the access scope, and the server address. **Open Chat** finishes setup and opens the WebUI; **Copy address** copies the server address.
 3. Open the WebUI at `http://127.0.0.1:11434/`.
-   The onboarding flow normally opens this address for you after setup.
-4. If you want LAN access, leave `Allow local network connections` on.
-   With that setting on, Pico AI Server binds to `0.0.0.0`.
-5. If you want local-only access, turn `Allow local network connections` off in the native app settings.
-   With that setting off, Pico AI Server binds to `127.0.0.1`.
-6. Use the menu extra when you need quick control.
+   The Ready page's **Open Chat** button normally opens this address for you.
+4. The Access choice sets the bind address. **Devices on my local network** binds Pico AI Server to `0.0.0.0`; **This Mac only** binds it to `127.0.0.1`. You can change this later with `Allow local network connections` in the app's settings.
+5. Use the menu extra when you need quick control.
    When the server is running, it shows the status, a `Start` or `Stop` button, and an IP-based server address with a copy button.
+
+Options such as **Open at login** and **Prevent sleep** are not part of the setup wizard. Configure them in the app's **Settings** window instead.
 
 ## Verify it worked
 

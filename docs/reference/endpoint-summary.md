@@ -49,6 +49,7 @@ If Pico AI Server is running, you get JSON back.
 | Status | Meaning | Notes |
 | --- | --- | --- |
 | `400` | Invalid request | Used for bad JSON, empty chat messages, and other request-shape problems |
+| `401` | Unauthorized | Returned when **Require API key** is on and the request has a missing, malformed, or invalid API key |
 | `404` | Not found | Used for missing models on most request paths |
 | `408` | Request timeout | Used when generation is canceled |
 | `409` | Conflict | Used for incomplete model states on some paths |
@@ -56,5 +57,5 @@ If Pico AI Server is running, you get JSON back.
 
 ## Edge cases
 - `GET /api/chat/completions` exists, but it is an internal helper that returns an empty `200` JSON body. Do not use it as the public Chat Completions route.
-- The router does not currently attach the auth middleware. Do not assume bearer-token enforcement unless your deployment adds it.
+- An auth middleware is always mounted but stays inactive until an admin turns on **Require API key** in the **Users** tab. While it is off, every request is served as the built-in user. While it is on, each request must carry a valid `Authorization: Bearer <key>` (or `X-API-Key: <key>`) header, or the server returns `401`. Static assets, `HEAD /`, and CORS preflight (`OPTIONS`) requests are exempt. See [Require an API Key](../user-guide/access/require-an-api-key.md).
 - `Serve Pico web chat` is present in settings, but the current build still serves the root WebUI unconditionally. Treat that toggle as under validation.
