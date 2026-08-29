@@ -32,6 +32,7 @@ Pico AI Server must be running. For another device on your LAN, `Allow local net
    curl http://SERVER:11434/v1/models
    ```
 
+   If the admin has turned on **Require API key**, add an enabled user's key — `-H "Authorization: Bearer YOUR_API_KEY"` — or this request returns `401`. See [Require an API Key](../access/require-an-api-key.md).
 5. If the list loads, move on to chat or responses.
 
 ## Verify it worked
@@ -49,8 +50,12 @@ Your client can reach `GET /v1/models` and receives JSON. If the list is empty, 
 - **Symptom:** The client reaches the server but chat requests fail with model errors.
   **Cause:** The requested model is not available.
   **Fix:** List models first and use one of the returned IDs.
+- **Symptom:** The client reaches the server but every request comes back `401 Unauthorized`.
+  **Cause:** The admin turned on **Require API key**, so requests need a key.
+  **Fix:** Send an `Authorization: Bearer <key>` header with a key from the **Users** tab. See [Require an API Key](../access/require-an-api-key.md).
 
 ## Next steps
 
 - [Hostnames, IP Addresses, and What to Copy](../networking/hostnames-ip-addresses-and-what-to-copy.md)
+- [Require an API Key](../access/require-an-api-key.md)
 - [Chat API](../../reference/chat/chat-api.md)

@@ -27,6 +27,11 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Access & Security',
+      items: ['user-guide/access/require-an-api-key'],
+    },
+    {
+      type: 'category',
       label: 'WebUI',
       items: [
         'user-guide/webui/use-the-webui',

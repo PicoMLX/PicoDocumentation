@@ -56,4 +56,5 @@ curl http://127.0.0.1:11434/ip
 ## Next steps
 
 - [Connect a Client](./connect-a-client.md)
+- [Require an API Key](../access/require-an-api-key.md)
 - [LAN Sharing Basics](../networking/lan-sharing-basics.md)
