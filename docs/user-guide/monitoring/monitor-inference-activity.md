@@ -39,14 +39,18 @@ Not every model batches. Batching depends on the model's architecture, so some f
 
 ### Per-request stats
 
-For each active request, the section shows a stat line with:
+For each active request, the section shows a stat line such as:
 
-- **Prompt tokens** — how many tokens were in the request's prompt.
-- **Generated tokens** — how many tokens have been produced so far.
-- **Mean tok/s** — the average generation speed for that request, in tokens per second.
-- **Time to first token** — how long the request waited before the first output token appeared.
+> 1200 prompt · 412 tok · 38 tok/s · 0.4 s to first token
 
-These numbers are per request, so with a batching model you see one line per active stream, and you can watch a slow first-token time or a low tok/s as load rises.
+Reading left to right:
+
+- **Prompt tokens** (`1200 prompt`) — how many tokens were in the request's prompt.
+- **Generated tokens** (`412 tok`) — how many tokens have been produced so far.
+- **Mean tok/s** (`38 tok/s`) — the average generation speed for that request since its first token.
+- **Time to first token** (`0.4 s to first token`) — how long the request waited before the first output token appeared, including any time queued behind other rows.
+
+The rate and time-to-first-token fields appear only once the first token is out, so a request still in its prompt phase shows just the token counts. These numbers are per request, so with a batching model you see one line per active stream, and you can watch a slow first-token time or a low tok/s as load rises.
 
 ## What the section does not show
 
@@ -57,22 +61,50 @@ These numbers are per request, so with a batching model you see one line per act
 
 1. Start the server and load a model.
 2. Open the menu extra. With no traffic, the Inference section shows the model as **Idle — no active requests**.
-3. Send a request — from the Web Chat, or with `curl`:
+3. Send a request that generates long enough to still be running when the section refreshes. A short prompt can finish inside the roughly two-second refresh, so ask for a long answer and raise the token cap:
 
    ```bash
    curl http://127.0.0.1:11434/v1/chat/completions \
      -H "Content-Type: application/json" \
      -d '{
        "model": "MODEL_NAME",
-       "messages": [{ "role": "user", "content": "Write a short poem about the sea." }],
+       "messages": [{ "role": "user", "content": "Write a long, detailed essay about the history of sailing." }],
+       "max_completion_tokens": 2000,
        "stream": true
      }'
    ```
 
-   Replace `MODEL_NAME` with an installed model — list them with `GET /v1/models`.
-4. While the request runs, the model block shows a mode summary and a stat line with live token counts and tok/s. Send several requests at once against a batching model and watch the active count rise (and, under enough load, the queued count appear and drain).
+   Replace `MODEL_NAME` with an installed model — list them with `GET /v1/models`. While it runs, the model block shows a mode summary and a stat line with live token counts and tok/s.
+4. To see batching and the queued count, send several long requests at once against a batch-capable model:
 
-## Related pages
+   ```bash
+   for i in 1 2 3 4 5; do
+     curl -s http://127.0.0.1:11434/v1/chat/completions \
+       -H "Content-Type: application/json" \
+       -d '{
+         "model": "MODEL_NAME",
+         "messages": [{ "role": "user", "content": "Write a long, detailed essay about the history of sailing." }],
+         "max_completion_tokens": 2000,
+         "stream": true
+       }' >/dev/null &
+   done
+   ```
+
+   Watch the active count rise (for example, `Batched 5/32`) and, if you launch more requests than the batch capacity, the queued count appear and then drain as slots free up.
+
+## Troubleshooting
+
+- **Symptom:** The Inference section does not appear at all.
+  **Cause:** No model is resident — nothing is loaded in memory yet.
+  **Fix:** Open the **Models** tab in the native app and select or load a model. Once it is resident, the section appears (showing **Idle — no active requests** until traffic arrives).
+- **Symptom:** A model always shows **Single stream**, even when you send several requests at once.
+  **Cause:** That model does not run batched — vision models and model families whose cache topology cannot batch always run one request at a time.
+  **Fix:** This is expected. Check the **Models** list for the batching badge; use a batch-capable model if you need concurrent requests to share one engine.
+- **Symptom:** You sent a request but never saw its stat line.
+  **Cause:** The generation finished inside the roughly two-second refresh window, so it was gone before the next update.
+  **Fix:** Use the longer request above (raise `max_completion_tokens` and ask for a long answer), or send several at once so at least one is always in flight when the section refreshes.
+
+## Next steps
 
 - [Install and Run Pico AI Server](../getting-started/install-and-run-pico-ai-server.md)
 - [Enable Built-in Tools](../enable-built-in-tools.md) — the System Info tool reports host memory, which pairs with watching inference load.
