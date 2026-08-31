@@ -19,7 +19,7 @@ Pico AI Server is a macOS app for Apple Silicon Macs — it runs models with MLX
 5. If you want local-only access, turn `Allow local network connections` off in the native app settings.
    With that setting off, Pico AI Server binds to `127.0.0.1`.
 6. Use the menu extra when you need quick control.
-   When the server is running, it shows the status, a `Start` or `Stop` button, and an IP-based server address with a copy button.
+   When the server is running, it shows the status, a `Start` or `Stop` button, and an IP-based server address with a copy button. It also has a live [Inference](../monitoring/monitor-inference-activity.md) section showing which models are loaded and how fast they are generating.
 
 ## Verify it worked
 
@@ -53,3 +53,4 @@ curl http://127.0.0.1:11434/hostname
 
 - [Configure Settings](./configure-settings.md)
 - [Use the WebUI](../webui/use-the-webui.md)
+- [Monitor Inference Activity](../monitoring/monitor-inference-activity.md)
