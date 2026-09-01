@@ -23,7 +23,7 @@ Only enabled tools are offered to the model. A tool you leave off is never adver
 The **System Info** tool lets a model ask about the Mac it is running on. When enabled, the model can report details such as:
 
 - **Hardware** — Mac model identifier, chip name, architecture, CPU core counts (total, performance, and efficiency), and thermal state
-- **Memory** — physical RAM, an available-memory estimate, and MLX active, cache, and peak usage
+- **Memory** — physical RAM, an available-memory estimate, and MLX active, cache, peak, and cache-limit figures (the cache limit is the ceiling MLX keeps its reusable buffer cache under)
 - **Operating system** — name, version, and build
 - **Host app** — Pico AI Server's name, version, and build
 
