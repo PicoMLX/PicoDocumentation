@@ -60,11 +60,12 @@ The rate and time-to-first-token fields appear only once the first token is out,
 - **No cache hit/miss counts.** Prompt-cache reuse is not active in the engine today, so there is no truthful number to report. This is intentionally left out rather than shown as a misleading zero.
 - **No per-user or per-request identity.** Streams are shown as anonymous slots on a model; the section does not attribute a request to the user or API key that made it.
 
-## Verify it worked
+## Try it now
 
-1. Start the server and load a model.
-2. Open the menu extra. With no traffic, the Inference section shows the model as **Idle — no active requests**.
-3. Send a request that generates long enough to still be running when the section refreshes. A short prompt can finish inside the roughly two-second refresh, so ask for a long answer and raise the token cap:
+Send some traffic so the Inference section has something live to report:
+
+1. Start the server and load a model, then open the menu extra. With no traffic, the Inference section shows the model as **Idle — no active requests**.
+2. Send one request that generates long enough to still be running when the section refreshes. A short prompt can finish inside the roughly two-second refresh, so ask for a long answer and raise the token cap:
 
    ```bash
    curl http://127.0.0.1:11434/v1/chat/completions \
@@ -77,8 +78,8 @@ The rate and time-to-first-token fields appear only once the first token is out,
      }'
    ```
 
-   Replace `MODEL_NAME` with an installed model — list them with `GET /v1/models`. While it runs, the model block shows a mode summary and a stat line with live token counts and tok/s.
-4. To see batching and the queued count, send several long requests at once against a batch-capable model:
+   Replace `MODEL_NAME` with an installed model — list them with `GET /v1/models`.
+3. To drive batching, send several long requests at once against a batch-capable model:
 
    ```bash
    for i in 1 2 3 4 5; do
@@ -93,7 +94,11 @@ The rate and time-to-first-token fields appear only once the first token is out,
    done
    ```
 
-   Watch the active count rise (for example, `Batched 5/32`) and, if you launch more requests than the batch capacity, the queued count appear and then drain as slots free up.
+## Verify it worked
+
+- **One request against a batch-capable model:** the model block shows a mode summary and a stat line with live token counts and tok/s. A lone request runs on the engine's solo fast path, so the summary reads `Fast path 1/32`.
+- **Several requests against a batch-capable model:** the active count rises — for example, `Batched 5/32` — as the requests share one engine.
+- **The queued count is conditional.** `· N queued` appears only when more requests are in flight than the model's batch capacity. Five requests against a 32-slot model batch without queuing; to make the queued count appear and then drain as slots free up, launch more requests than the model's capacity.
 
 ## Troubleshooting
 
