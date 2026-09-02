@@ -40,6 +40,11 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Monitoring',
+      items: ['user-guide/monitoring/monitor-inference-activity'],
+    },
+    {
+      type: 'category',
       label: 'Reference',
       items: [
         'reference/endpoint-summary',
