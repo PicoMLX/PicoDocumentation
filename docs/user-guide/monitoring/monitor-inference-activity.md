@@ -33,7 +33,10 @@ Under the block, each in-flight request gets its own stat line.
 The mode summary tells you how this model handles concurrent requests:
 
 - **`Batched 3/32 · 2 queued`** — the model is running requests in a batch. `3/32` means three requests are generating at once out of a batch capacity of 32, and `2 queued` means two more are waiting for a free slot. The queued count only appears when requests are actually waiting; it drains as slots free up.
+- **`Fast path 1/32`** — a batch-capable model is serving a single request on the engine's *solo fast path*, an optimized lane for a lone request. It still shows the batch capacity (`/32`) because it is the same batching engine, not a different mode: the next request joins this one and the row becomes `Batched 2/32`. A queued variant (`Fast path 1/32 · 1 queued`) can appear when a newcomer has to wait for a slot rather than joining immediately.
 - **`Single stream`** — the model runs one request at a time. Additional requests wait until the current one finishes.
+
+Fast path and single stream look similar — one active request — but they mean different things. **Fast path** is a batching model that happens to have only one request right now and will batch the next one; **Single stream** is a model that cannot batch at all, so requests always run one after another.
 
 Not every model batches. Batching depends on the model's architecture, so some families always run single stream, and vision models in particular are served one request at a time. In the native app's **Models** list, models that support batched inference are marked with a batching badge; a model without that badge will show **Single stream** here.
 
