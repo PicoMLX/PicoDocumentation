@@ -62,10 +62,14 @@ Send chat requests through either the OpenAI-compatible or Ollama-compatible sur
 | `input_video` | URL or `data:` URL |
 
 ## Multimodal requests
-Send images, video, or audio by attaching media parts to a message. Use the
-content-part forms (`image_url`, `input_image`, `video_url`, `input_video`)
-on the OpenAI-compatible surface, or the Ollama-style `images` array on a
-message. Each part takes a URL or a `data:` URL.
+Send images or video by attaching media to a message. The wire format differs
+by surface:
+
+- **OpenAI-compatible** (`/v1/chat/completions`): use the content-part forms
+  `image_url`, `input_image`, `video_url`, or `input_video` in a
+  content-part array. Each takes a public URL or a `data:` URL.
+- **Ollama-compatible** (`/api/chat`, `/api/generate`): use the message-level
+  `images` array. Its elements are raw base64-encoded image data, not URLs.
 
 Media requires a **vision-capable model**. Pico AI Server routes any request
 that carries media to a vision model and fails closed if the target model
@@ -73,17 +77,22 @@ cannot be loaded as one: the whole request returns an error rather than
 silently answering as if the attachments were not there.
 
 When the selected model cannot serve the attachments, the request fails with
-`500` (`server_error`) and this message:
+HTTP `500` and this message:
 
 ```text
 The request includes images, video or audio, but 'MODEL_NAME' cannot be loaded as a vision model. Choose a vision-capable model or remove the attachments.
 ```
 
-To fix it, select a vision-capable model or remove the media parts. You can
-tell which installed models are vision-capable from the `vision` capability
-in the [Models API](../models/models-api.md) response.
+On the OpenAI-compatible surface the error type is `server_error`; the
+Ollama-compatible surfaces return the simpler `{"error":"message"}` shape (see
+[Errors](#errors)). To fix it, select a vision-capable model or remove the
+media. You can tell which installed models are vision-capable from the
+`vision` capability in the [Models API](../models/models-api.md) response.
 
 ### Image request example
+
+Replace `IMAGE_URL` with a public image URL or a `data:` URL (for example,
+`data:image/jpeg;base64,<BASE64_BYTES>`).
 
 ```bash
 curl http://127.0.0.1:11434/v1/chat/completions \
@@ -95,7 +104,7 @@ curl http://127.0.0.1:11434/v1/chat/completions \
         "role": "user",
         "content": [
           {"type": "text", "text": "What is in this image?"},
-          {"type": "image_url", "image_url": {"url": "https://example.com/photo.jpg"}}
+          {"type": "image_url", "image_url": {"url": "IMAGE_URL"}}
         ]
       }
     ]
