@@ -61,6 +61,59 @@ Send chat requests through either the OpenAI-compatible or Ollama-compatible sur
 | `video_url` | URL or `data:` URL |
 | `input_video` | URL or `data:` URL |
 
+## Multimodal requests
+Send images or video by attaching media to a message. The wire format differs
+by surface:
+
+- **OpenAI-compatible** (`/v1/chat/completions`): use the content-part forms
+  `image_url`, `input_image`, `video_url`, or `input_video` in a
+  content-part array. Each takes a public URL or a `data:` URL.
+- **Ollama-compatible** (`/api/chat`, `/api/generate`): use the message-level
+  `images` array. Its elements are raw base64-encoded image data, not URLs.
+
+Media requires a **vision-capable model**. Pico AI Server routes any request
+that carries media to a vision model and fails closed if the target model
+cannot be loaded as one: the whole request returns an error rather than
+silently answering as if the attachments were not there.
+
+When the selected model cannot serve the attachments, the request fails with
+HTTP `500` and this message:
+
+```text
+The request includes images, video or audio, but 'MODEL_NAME' cannot be loaded as a vision model. Choose a vision-capable model or remove the attachments.
+```
+
+On the OpenAI-compatible surface the error type is `server_error`; the
+Ollama-compatible surfaces return the simpler `{"error":"message"}` shape (see
+[Errors](#errors)). To fix it, select a vision-capable model or remove the
+media. You can tell which installed models are vision-capable from the
+`vision` value in a model's `capabilities` list, returned by
+[`POST /api/show`](../models/models-api.md#post-apishow) in the Models API.
+The `GET /v1/models` and `GET /api/tags` list responses do not include
+capabilities.
+
+### Image request example
+
+Replace `IMAGE_URL` with a public image URL or a `data:` URL (for example,
+`data:image/jpeg;base64,<BASE64_BYTES>`).
+
+```bash
+curl http://127.0.0.1:11434/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "VISION_MODEL_NAME",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "text", "text": "What is in this image?"},
+          {"type": "image_url", "image_url": {"url": "IMAGE_URL"}}
+        ]
+      }
+    ]
+  }'
+```
+
 ## Reasoning
 Pico AI Server supports OpenAI, vLLM, and Ollama ways of toggling reasoning.
 The current precedence is:
@@ -187,7 +240,7 @@ Ollama-compatible streaming uses `application/x-ndjson`.
 | `404` | `not_found_error` | Model not found |
 | `408` | `invalid_request_error` | Generation canceled |
 | `409` | `invalid_request_error` | Model is incomplete |
-| `500` | `server_error` | Internal failure |
+| `500` | `server_error` | Internal failure, or media sent to a model that is not vision-capable (see [Multimodal requests](#multimodal-requests)) |
 
 Ollama-compatible errors use the simpler form:
 
