@@ -61,6 +61,47 @@ Send chat requests through either the OpenAI-compatible or Ollama-compatible sur
 | `video_url` | URL or `data:` URL |
 | `input_video` | URL or `data:` URL |
 
+## Multimodal requests
+Send images, video, or audio by attaching media parts to a message. Use the
+content-part forms (`image_url`, `input_image`, `video_url`, `input_video`)
+on the OpenAI-compatible surface, or the Ollama-style `images` array on a
+message. Each part takes a URL or a `data:` URL.
+
+Media requires a **vision-capable model**. Pico AI Server routes any request
+that carries media to a vision model and fails closed if the target model
+cannot be loaded as one: the whole request returns an error rather than
+silently answering as if the attachments were not there.
+
+When the selected model cannot serve the attachments, the request fails with
+`500` (`server_error`) and this message:
+
+```text
+The request includes images, video or audio, but 'MODEL_NAME' cannot be loaded as a vision model. Choose a vision-capable model or remove the attachments.
+```
+
+To fix it, select a vision-capable model or remove the media parts. You can
+tell which installed models are vision-capable from the `vision` capability
+in the [Models API](../models/models-api.md) response.
+
+### Image request example
+
+```bash
+curl http://127.0.0.1:11434/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "VISION_MODEL_NAME",
+    "messages": [
+      {
+        "role": "user",
+        "content": [
+          {"type": "text", "text": "What is in this image?"},
+          {"type": "image_url", "image_url": {"url": "https://example.com/photo.jpg"}}
+        ]
+      }
+    ]
+  }'
+```
+
 ## Reasoning
 Pico AI Server supports OpenAI, vLLM, and Ollama ways of toggling reasoning.
 The current precedence is:
@@ -187,7 +228,7 @@ Ollama-compatible streaming uses `application/x-ndjson`.
 | `404` | `not_found_error` | Model not found |
 | `408` | `invalid_request_error` | Generation canceled |
 | `409` | `invalid_request_error` | Model is incomplete |
-| `500` | `server_error` | Internal failure |
+| `500` | `server_error` | Internal failure, or media sent to a model that is not vision-capable (see [Multimodal requests](#multimodal-requests)) |
 
 Ollama-compatible errors use the simpler form:
 
