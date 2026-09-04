@@ -87,7 +87,10 @@ On the OpenAI-compatible surface the error type is `server_error`; the
 Ollama-compatible surfaces return the simpler `{"error":"message"}` shape (see
 [Errors](#errors)). To fix it, select a vision-capable model or remove the
 media. You can tell which installed models are vision-capable from the
-`vision` capability in the [Models API](../models/models-api.md) response.
+`vision` value in a model's `capabilities` list, returned by
+[`POST /api/show`](../models/models-api.md#post-apishow) in the Models API.
+The `GET /v1/models` and `GET /api/tags` list responses do not include
+capabilities.
 
 ### Image request example
 
