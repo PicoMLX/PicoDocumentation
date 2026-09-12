@@ -44,9 +44,24 @@ Cancellation is the one load-related response you will see: if you cancel a non-
 ## Vision models and memory
 When you use a vision-capable model, Pico AI Server serves both text-only and image requests from a single resident copy of that model. It does not load a separate text model alongside it, which keeps memory use lower on a shared server.
 
-A request that carries an image, video, or audio still needs a vision-capable model. If the selected model cannot act as one, the request fails rather than silently answering without the media. See the [Chat API](./chat/chat-api.md) page for the media content-part forms.
+A request that carries an image or video still needs a vision-capable model. If the selected model cannot act as one, the request fails rather than silently answering without the media. See the [Chat API](./chat/chat-api.md) page for the media content-part forms.
 
 ## Edge cases
 - Batching and queuing are engine behaviors, not request parameters. No field in a request enables, disables, or reserves a batch slot.
 - Concurrency is shared across all clients. One client sending many parallel requests competes with every other client for the same decoding capacity.
 - The current build reports live request and memory activity in the app's menu-bar panel, not through the HTTP API. No endpoint returns queue depth or the number of active streams.
+
+## Troubleshooting
+
+- **Symptom:** Parallel requests take far longer than the same request sent on its own, or appear to hang.
+  **Likely cause:** The server is at capacity and is queuing your requests; each starts only as earlier work finishes. This is backpressure, not a failure — no error is returned.
+  **Fix:** Raise the client timeout, send fewer requests at once, or stream so you receive tokens as soon as your request begins decoding.
+  **Verify:** Send a single request in isolation. If it returns promptly, the earlier delay was queuing rather than a server problem.
+- **Symptom:** A non-streaming request returns `408 Request Timeout`.
+  **Likely cause:** The generation was canceled — for example, the client disconnected or aborted the request before it finished.
+  **Fix:** Retry with a longer client timeout, and prefer streaming for long generations so a slow start does not trip the timeout.
+
+## Next steps
+
+- [Chat API](./chat/chat-api.md) — request fields, streaming, and media content-part forms.
+- [Endpoint Summary](./endpoint-summary.md) — the full HTTP surface and status codes.
