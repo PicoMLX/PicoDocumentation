@@ -14,11 +14,12 @@ Requests that cannot share a batch — for example, a model family that does not
 
 ### Try it now
 
-Send three requests in parallel and confirm all three return:
+Send three requests in parallel and confirm each one returns its own HTTP status:
 
 ```bash
 for i in 1 2 3; do
-  curl -s http://127.0.0.1:11434/v1/chat/completions \
+  curl -sS -o /dev/null -w "request $i: HTTP %{http_code}\n" \
+    http://127.0.0.1:11434/v1/chat/completions \
     -H "Content-Type: application/json" \
     -d '{
       "model": "MODEL_NAME",
@@ -28,7 +29,15 @@ done
 wait
 ```
 
-Replace `MODEL_NAME` with an installed model — list them with `GET /v1/models`. Each request returns its own completion.
+Replace `MODEL_NAME` with an installed model — list them with `GET /v1/models`. Each request runs concurrently and prints its own status line (the order varies):
+
+```text
+request 1: HTTP 200
+request 2: HTTP 200
+request 3: HTTP 200
+```
+
+A non-`200` code, or a `curl` error in place of a status line, marks a request that did not succeed. `-sS` keeps error messages visible while hiding the progress meter, and `-o /dev/null` discards the response body so only the status lines remain.
 
 ## Queuing and backpressure
 When more work arrives than the server can decode at once, extra requests wait in a queue and start as capacity frees up. The server does not shed load with a rate-limit response: there is no `429 Too Many Requests` and no `503 Service Unavailable` on the busy path. A saturated server shows up as higher latency, not as an error.
@@ -36,7 +45,7 @@ When more work arrives than the server can decode at once, extra requests wait i
 Design clients accordingly:
 
 - Use a generous request timeout. A queued request can wait behind others before it starts producing tokens.
-- Prefer streaming for long generations, so you receive tokens as soon as your request begins decoding. See the [Chat API](./chat/chat-api.md) page for streaming details.
+- Prefer streaming for long generations, so you receive tokens as soon as your request begins decoding. The streaming format differs by endpoint: see the [Chat API](./chat/chat-api.md) page for Chat Completions and Ollama, or the [OpenResponses API](./openresponses-api.md) page for `/v1/responses`.
 - Do not treat a slow response as a failure to retry right away. An aggressive retry adds more work to the same queue.
 
 Cancellation is the one load-related response you will see: if you cancel a non-streaming generation, the server returns `408 Request Timeout`.
@@ -57,11 +66,9 @@ A request that carries an image or video still needs a vision-capable model. If 
   **Likely cause:** The server is at capacity and is queuing your requests; each starts only as earlier work finishes. This is backpressure, not a failure — no error is returned.
   **Fix:** Raise the client timeout, send fewer requests at once, or stream so you receive tokens as soon as your request begins decoding.
   **Verify:** Send a single request in isolation. If it returns promptly, the earlier delay was queuing rather than a server problem.
-- **Symptom:** A non-streaming request returns `408 Request Timeout`.
-  **Likely cause:** The generation was canceled — for example, the client disconnected or aborted the request before it finished.
-  **Fix:** Retry with a longer client timeout, and prefer streaming for long generations so a slow start does not trip the timeout.
 
 ## Next steps
 
 - [Chat API](./chat/chat-api.md) — request fields, streaming, and media content-part forms.
+- [OpenResponses API](./openresponses-api.md) — the `/v1/responses` contract, including its streaming lifecycle events.
 - [Endpoint Summary](./endpoint-summary.md) — the full HTTP surface and status codes.
