@@ -201,3 +201,4 @@ Ollama-compatible errors use the simpler form:
 - Multiple system messages are merged before generation.
 - The request model accepts `format`, but the current build does not give it a stable, documented effect.
 - There is no public `/v1/chat` route. Use `/v1/chat/completions`.
+- Multiple clients can call the server at once, and compatible requests are batched together. The server queues excess load instead of returning a rate-limit error. See [Concurrency and Throughput](../concurrency-and-throughput.md).

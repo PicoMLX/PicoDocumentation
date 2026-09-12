@@ -43,6 +43,7 @@ const sidebars: SidebarsConfig = {
       label: 'Reference',
       items: [
         'reference/endpoint-summary',
+        'reference/concurrency-and-throughput',
         'reference/models/models-api',
         'reference/chat/chat-api',
         'reference/openresponses-api',
