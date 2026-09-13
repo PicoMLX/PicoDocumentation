@@ -177,6 +177,7 @@ Notes
 
 | Status | Meaning | Notes |
 | --- | --- | --- |
+| `401` | Unauthorized | Returned when `Require API key` is on and the request has no valid API key |
 | `500` | Server could not read model metadata | Applies to all model routes when the local model store fails |
 
 ## Edge cases

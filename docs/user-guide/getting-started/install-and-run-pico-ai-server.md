@@ -10,16 +10,19 @@ Pico AI Server is a macOS app for Apple Silicon Macs — it runs models with MLX
 ## Start the server
 
 1. Launch Pico AI Server.
-2. Complete the first-run flow.
-   The onboarding flow can set `Allow local network connections`, `Broadcast Bonjour`, `Open at login`, and `Prevent sleep`.
-3. Open the WebUI at `http://127.0.0.1:11434/`.
-   The onboarding flow normally opens this address for you after setup.
-4. If you want LAN access, leave `Allow local network connections` on.
-   With that setting on, Pico AI Server binds to `0.0.0.0`.
-5. If you want local-only access, turn `Allow local network connections` off in the native app settings.
-   With that setting off, Pico AI Server binds to `127.0.0.1`.
+2. Work through the first-run flow. It walks you through a few pages:
+   - Choose the first model to download (or keep one you already have).
+   - On `Choose who can connect`, pick `This Mac only` or `Devices on my local network`. If you choose local-network sharing, you can also turn on `Make Pico discoverable automatically` to advertise the server over Bonjour.
+3. On the final onboarding page, click `Start server`.
+   The server does not start until you press this button — moving through onboarding never starts it for you. If you change a setting while the server is already running, the button reads `Restart server` and lists the pending changes; if a start fails, it reads `Try again`.
+4. Once the server is running, click `Open Chat` to open the WebUI at `http://127.0.0.1:11434/`.
+5. Your `Choose who can connect` choice decides where the server listens:
+   - `Devices on my local network` binds Pico AI Server to `0.0.0.0`.
+   - `This Mac only` binds it to `127.0.0.1`.
+
+   You can change this later with `Allow local network connections` in the native app settings.
 6. Use the menu extra when you need quick control.
-   When the server is running, it shows the status, a `Start` or `Stop` button, and an IP-based server address with a copy button.
+   When the server is running, it shows the status, a `Start` or `Stop` button, and an IP-based server address with a copy button. The button is disabled briefly while the server is starting or stopping.
 
 ## Verify it worked
 
