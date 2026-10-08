@@ -195,6 +195,12 @@ Ollama-compatible errors use the simpler form:
 {"error":"message"}
 ```
 
+## Server shutdown
+
+When the server stops or restarts — from the menu extra's **Stop** button, from **Quit**, from a settings change that restarts it, or when the process receives `SIGTERM` or `SIGINT` (for example, a build launched from a terminal) — it stops accepting new requests and drains the ones already in flight.
+
+In-flight requests, including active streaming completions, are given up to 10 seconds to finish before the server shuts down. A clean stop within that window lets a streaming response complete normally; any request still running after 10 seconds is terminated as the server closes.
+
 ## Edge cases
 - If `model` is omitted, the current build falls back to the configured default model.
 - If `stream` is omitted, the request is handled as non-streaming.
