@@ -16,7 +16,7 @@ The menu behaves like any standard macOS menu, so you can also move through it w
 
 ## Status at the top
 
-The top of the menu shows a live status area. While the server is running it shows the status, a `Start` or `Stop` button, and an IP-based server address with a copy button. The status area keeps refreshing while the menu is open. If it is taller than your screen it scrolls, and the commands below it stay in place, so a command never moves out from under the pointer while you are reaching for it.
+The top of the menu shows a live status area: the current server status and a button that starts or stops the server. The button reads **Stop** while the server is running and **Start** while it is stopped. While the server is running, the status area also shows an IP-based server address with a copy button. The status area keeps refreshing while the menu is open; if it is taller than your screen it scrolls, and the commands below it stay in place, so a command never moves out from under the pointer while you are reaching for it.
 
 ## Commands
 
