@@ -27,7 +27,25 @@ Below the status area are the menu commands:
 - **Settings…** — `⌘,` — opens the app settings. Hold Option to switch this command to **Setup Wizard…**.
 - **Quit Pico AI Server** — `⌘Q` — quits the app.
 
-Each command shows its keyboard shortcut next to it. While the menu is open you can run a command by clicking it, by sliding to it and releasing, or by pressing its shortcut.
+Commands that have a keyboard shortcut show it next to the command name. While the menu is open you can run any command by clicking it or by sliding to it and releasing; commands that list a shortcut can also be run by pressing that shortcut.
+
+## Verify it worked
+
+With the server running, open the menu and choose **Open Pico Web Chat**. Your browser opens Pico's built-in web chat at `http://localhost:11434/` (the default server port).
+
+To confirm that address independently, open the same URL yourself:
+
+```bash
+open http://localhost:11434/
+```
+
+If the web chat loads in both cases, the menu command is working.
+
+## Troubleshooting
+
+- **Symptom:** **Open Pico Web Chat** is dimmed and cannot be chosen.
+  **Cause:** The server is not running.
+  **Fix:** Use the `Start` button in the menu's status area (or start the server in the app), then reopen the menu and choose the command again.
 
 ## Next steps
 

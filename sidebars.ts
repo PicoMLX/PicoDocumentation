@@ -14,7 +14,7 @@ const sidebars: SidebarsConfig = {
         'user-guide/getting-started/install-and-run-pico-ai-server',
         'user-guide/getting-started/configure-settings',
         'user-guide/getting-started/connect-a-client',
-        'user-guide/getting-started/menu-bar-menu',
+        'user-guide/getting-started/use-the-menu-bar-menu',
       ],
     },
     {
