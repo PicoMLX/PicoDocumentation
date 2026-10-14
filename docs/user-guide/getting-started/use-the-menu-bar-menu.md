@@ -31,9 +31,9 @@ Commands that have a keyboard shortcut show it next to the command name. While t
 
 ## Verify it worked
 
-With the server running, open the menu and choose **Open Pico Web Chat**. Your browser opens Pico's built-in web chat at `http://localhost:11434/` (the default server port).
+With the server running, open the menu and choose **Open Pico Web Chat**. Your browser opens Pico's built-in web chat at `http://localhost:11434/` (the default server port). If you changed the `Port` in settings, the command opens that port instead.
 
-To confirm that address independently, open the same URL yourself:
+To confirm that address independently, open the same URL yourself (use your configured port if you changed it):
 
 ```bash
 open http://localhost:11434/
