@@ -133,7 +133,7 @@ Parameters
 
 | Field | Type | Required | Notes |
 | --- | --- | --- | --- |
-| `model` | string | Yes | Accepts names with or without `:latest` |
+| `model` | string | Yes | Accepts names with or without `:latest`. Matched case-insensitively as a substring of the model ID; the first matching model is returned |
 
 Example request
 
@@ -177,10 +177,11 @@ Notes
 
 | Status | Meaning | Notes |
 | --- | --- | --- |
+| `404` | Model not found | Returned by `/api/show` when no model ID matches the requested name |
 | `500` | Server could not read model metadata | Applies to all model routes when the local model store fails |
 
 ## Edge cases
 - Empty arrays are valid when no models are available yet.
-- `/api/show` strips `:latest` before lookup.
-- A missing model on `/api/show` is intended to be a `404`, but the current controller catches the lookup error and may return `500` instead.
+- `/api/show` strips `:latest` before lookup, then matches the remaining text case-insensitively against model IDs and returns the first match. A partial name can therefore resolve to a model whose ID contains it.
+- A missing model on `/api/show` returns `404`. A `500` from this route means the model store itself failed, not that the model was absent.
 - Client apps can list models, but they cannot download models through these routes.
