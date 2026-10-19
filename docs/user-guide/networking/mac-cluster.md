@@ -72,9 +72,7 @@ You don't choose how the Macs talk to each other, and the app doesn't show it: P
 
 Both Macs decide from the same information, so they always pick the same link: if either can't take the direct path, the two use TCP together.
 
-Pairing comes first, and it needs a compatible, recent version of Pico on both Macs. A Mac running a version that predates this won't pair with a newer one at all — you'll see `Update Pico on both Macs`, and the two won't cluster until both run a matching version. This is a refusal to pair, not a slower cluster.
-
-Once both Macs commit to the direct Thunderbolt link, there's no silent retreat to the network. If that link can't be established, adding the Mac fails with the connection error rather than quietly continuing over TCP.
+Pairing comes first, and the two Macs must run compatible versions of Pico — ones new enough to speak the same cluster protocol. A Mac too old to pair with a newer one shows `Update Pico on both Macs to use them together`; update the older Mac and add it again.
 
 ## Leave or remove the cluster
 
@@ -106,9 +104,6 @@ Pico forms a cluster only once per launch. After you leave or remove a cluster, 
 - **Symptom:** `Thunderbolt cable disconnected` or `Connection lost`.
   **Cause:** The link between the Macs dropped.
   **Fix:** Reconnect the Thunderbolt cable, or bring the other Mac back onto the network. The cluster is restored when the other Mac is reachable again.
-- **Symptom:** The two Macs are cabled over Thunderbolt 5, but adding the Mac fails with a connection error.
-  **Cause:** The direct Thunderbolt (RDMA) link couldn't be established, and the cluster doesn't fall back to the network on its own.
-  **Fix:** Reseat the Thunderbolt 5 cable, make sure both Macs run the same recent version of Pico, and add the Mac again.
 
 :::caution
 Mac Cluster works best with two Macs that have the same chip and memory. If the Macs have different memory, the cluster uses the same amount from each Mac (the smaller Mac's), and overall speed follows the slower Mac.
