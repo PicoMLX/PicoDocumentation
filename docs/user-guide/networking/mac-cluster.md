@@ -63,6 +63,17 @@ dns-sd -L "SERVICE_NAME" _pico._tcp local
 
 Replace `SERVICE_NAME` with the name reported by `dns-sd -B _pico._tcp`. While Mac Cluster is on, the TXT record carries extra keys — `Cluster`, `ClusterVersion`, `ClusterPort`, `Chip`, and `MemoryGB` — alongside the usual discovery fields.
 
+## How the two Macs connect
+
+You don't choose how the Macs talk to each other, and the app doesn't show it: Pico picks the fastest link the two Macs share and uses it on its own. The `In This Cluster` panel reports the physical connection (for example, `Thunderbolt`), not the transport underneath it.
+
+- **Thunderbolt 5 (fastest).** When both Macs are joined by a Thunderbolt 5 cable and both run a recent version of Pico, the cluster moves model data directly between the Macs over Thunderbolt using RDMA. This is the fastest link and the one to aim for.
+- **Ethernet or Wi‑Fi.** On a network instead of a direct cable, the cluster runs over TCP. It still works, just slower.
+
+Both Macs decide from the same information, so they always pick the same link. If either Mac can't take the direct Thunderbolt path — because it's on the network, or runs an older version of Pico that predates RDMA support — the two fall back to TCP together. The fast path is also why both Macs must run a matching, recent version: Macs on different cluster protocols won't pair at all (see `Update Pico on both Macs` under Troubleshooting).
+
+Once both Macs commit to the direct Thunderbolt link, there's no silent retreat to the network. If that link can't be established, adding the Mac fails with the connection error rather than quietly continuing over TCP.
+
 ## Leave or remove the cluster
 
 - On the host, click `Remove "<member>"` to end the cluster.
@@ -93,6 +104,9 @@ Pico forms a cluster only once per launch. After you leave or remove a cluster, 
 - **Symptom:** `Thunderbolt cable disconnected` or `Connection lost`.
   **Cause:** The link between the Macs dropped.
   **Fix:** Reconnect the Thunderbolt cable, or bring the other Mac back onto the network. The cluster is restored when the other Mac is reachable again.
+- **Symptom:** The two Macs are cabled over Thunderbolt 5, but adding the Mac fails with a connection error.
+  **Cause:** The direct Thunderbolt (RDMA) link couldn't be established, and the cluster doesn't fall back to the network on its own.
+  **Fix:** Reseat the Thunderbolt 5 cable, make sure both Macs run the same recent version of Pico, and add the Mac again.
 
 :::caution
 Mac Cluster works best with two Macs that have the same chip and memory. If the Macs have different memory, the cluster uses the same amount from each Mac (the smaller Mac's), and overall speed follows the slower Mac.
