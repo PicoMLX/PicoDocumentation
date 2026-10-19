@@ -67,10 +67,12 @@ Replace `SERVICE_NAME` with the name reported by `dns-sd -B _pico._tcp`. While M
 
 You don't choose how the Macs talk to each other, and the app doesn't show it: Pico picks the fastest link the two Macs share and uses it on its own. The `In This Cluster` panel reports the physical connection (for example, `Thunderbolt`), not the transport underneath it.
 
-- **Thunderbolt 5 (fastest).** When both Macs are joined by a Thunderbolt 5 cable and both run a recent version of Pico, the cluster moves model data directly between the Macs over Thunderbolt using RDMA. This is the fastest link and the one to aim for.
-- **Ethernet or Wi‑Fi.** On a network instead of a direct cable, the cluster runs over TCP. It still works, just slower.
+- **Direct Thunderbolt link (fastest).** When both Macs report that they can move data directly over Thunderbolt — in practice, a recent version of Pico on each and a Thunderbolt 5 connection between them — the cluster sends model data over that direct link (RDMA). This is the fastest option and the one to aim for.
+- **Ethernet or Wi‑Fi.** Otherwise the cluster runs over TCP: over a network instead of a direct cable, or whenever either Mac doesn't report the direct path. It still works, just slower.
 
-Both Macs decide from the same information, so they always pick the same link. If either Mac can't take the direct Thunderbolt path — because it's on the network, or runs an older version of Pico that predates RDMA support — the two fall back to TCP together. The fast path is also why both Macs must run a matching, recent version: Macs on different cluster protocols won't pair at all (see `Update Pico on both Macs` under Troubleshooting).
+Both Macs decide from the same information, so they always pick the same link: if either can't take the direct path, the two use TCP together.
+
+Pairing comes first, and it needs a compatible, recent version of Pico on both Macs. A Mac running a version that predates this won't pair with a newer one at all — you'll see `Update Pico on both Macs`, and the two won't cluster until both run a matching version. This is a refusal to pair, not a slower cluster.
 
 Once both Macs commit to the direct Thunderbolt link, there's no silent retreat to the network. If that link can't be established, adding the Mac fails with the connection error rather than quietly continuing over TCP.
 
