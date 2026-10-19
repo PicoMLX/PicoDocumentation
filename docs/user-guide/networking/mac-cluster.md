@@ -63,6 +63,17 @@ dns-sd -L "SERVICE_NAME" _pico._tcp local
 
 Replace `SERVICE_NAME` with the name reported by `dns-sd -B _pico._tcp`. While Mac Cluster is on, the TXT record carries extra keys — `Cluster`, `ClusterVersion`, `ClusterPort`, `Chip`, and `MemoryGB` — alongside the usual discovery fields.
 
+## How the two Macs connect
+
+You don't choose how the Macs talk to each other, and the app doesn't show it: Pico picks the fastest link the two Macs share and uses it on its own. The `In This Cluster` panel reports the physical connection (for example, `Thunderbolt`), not the transport underneath it.
+
+- **Direct Thunderbolt link (fastest).** When both Macs report that they can move data directly over Thunderbolt — in practice, a recent version of Pico on each and a Thunderbolt 5 connection between them — the cluster sends model data over that direct link (RDMA). This is the fastest option and the one to aim for.
+- **Ethernet or Wi‑Fi.** Otherwise the cluster runs over TCP: over a network instead of a direct cable, or whenever either Mac doesn't report the direct path. It still works, just slower.
+
+Both Macs decide from the same information, so they always pick the same link. If either can't take the direct path, they pair over TCP instead. If both can but the direct link fails to start, pairing stops with a connection error rather than retrying over TCP.
+
+Pairing comes first, and the two Macs must run compatible versions of Pico — ones new enough to speak the same cluster protocol. A Mac too old to pair with a newer one shows `Update Pico on both Macs to use them together`; update the older Mac and add it again.
+
 ## Leave or remove the cluster
 
 - On the host, click `Remove "<member>"` to end the cluster.
