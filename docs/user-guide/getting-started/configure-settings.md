@@ -41,6 +41,15 @@ If you plan to test from another device on the same LAN, get the address to use:
 curl http://127.0.0.1:11434/ip
 ```
 
+## Check the app and MLX version
+
+The footer at the bottom of the Settings window shows which build you're running:
+
+- `Pico Server <version> (build <n>)` — the app version.
+- `MLX <version>` — the version of MLX, Apple's on-device machine-learning framework, that this build runs on (for example, `MLX 0.32.4`).
+
+Quote both lines when you report a problem, so support knows exactly which app build and engine you're on.
+
 ## Troubleshooting
 
 - **Symptom:** The WebUI stops working after you turn on `Allow Cross-Origin Resource Sharing (CORS)`.

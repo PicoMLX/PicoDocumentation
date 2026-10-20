@@ -32,7 +32,7 @@ When it is on, `This Mac` shows this Mac's model, chip, and memory, and the othe
 Do this on the Mac you want to be the host.
 
 1. Open `Settings` → `Cluster`. The other Mac appears under `Nearby Macs`.
-2. Click `Add` next to it.
+2. Click `Add` next to it. The row reads `Connecting…` while Pico reaches the other Mac, then `Waiting for an answer on that Mac…` once the request gets there. If Pico can't reach the Mac within ten seconds, the row returns to `Add` so you can try again — it never hangs.
 3. Confirm the pairing on the other Mac:
    - Over a direct Thunderbolt cable, the other Mac shows a prompt that reads `"<name>" wants to add this Mac to its cluster`. Click `Join` on that Mac.
    - Over Ethernet or Wi‑Fi, the other Mac shows a six‑digit code. Type that code on the host Mac. This confirms you are adding the Mac in front of you. After three wrong codes, the request is declined and you start over.
@@ -67,12 +67,31 @@ Replace `SERVICE_NAME` with the name reported by `dns-sd -B _pico._tcp`. While M
 
 You don't choose how the Macs talk to each other, and the app doesn't show it: Pico picks the fastest link the two Macs share and uses it on its own. The `In This Cluster` panel reports the physical connection (for example, `Thunderbolt`), not the transport underneath it.
 
-- **Direct Thunderbolt link (fastest).** When both Macs report that they can move data directly over Thunderbolt — in practice, a recent version of Pico on each and a Thunderbolt 5 connection between them — the cluster sends model data over that direct link (RDMA). This is the fastest option and the one to aim for.
+- **Direct Thunderbolt link (fastest).** When both Macs report that they can move data directly over Thunderbolt, the cluster sends model data over that direct link (RDMA). This is the fastest option and the one to aim for. It takes a recent version of Pico on each Mac, Thunderbolt 5 ports on both Macs joined by a Thunderbolt 5 cable, macOS 26.2 or later on both, and RDMA turned on — see [Get the fastest link](#get-the-fastest-link) below.
 - **Ethernet or Wi‑Fi.** Otherwise the cluster runs over TCP: over a network instead of a direct cable, or whenever either Mac doesn't report the direct path. It still works, just slower.
 
 Both Macs decide from the same information, so they always pick the same link. If either can't take the direct path, they pair over TCP instead. If both can but the direct link fails to start, pairing stops with a connection error rather than retrying over TCP.
 
 Pairing comes first, and the two Macs must run compatible versions of Pico — ones new enough to speak the same cluster protocol. A Mac too old to pair with a newer one shows `Update Pico on both Macs to use them together`; update the older Mac and add it again.
+
+### Get the fastest link
+
+The `Thunderbolt` section in `Settings` → `Cluster` tells you whether this Mac is ready for the direct RDMA link and, when it isn't, names the one thing to do next. When a step needs a change outside Pico, the section shows a button that opens the right macOS settings for you.
+
+For the direct link, both Macs need all of the following. The section walks you through them roughly in this order:
+
+- Thunderbolt 5 on both Macs: each Mac needs Thunderbolt 5 ports, connected by a Thunderbolt 5 cable. A Mac with only Thunderbolt 4 ports can't take the direct link, even with a Thunderbolt 5 cable.
+- macOS 26.2 or later (RDMA is not available on earlier macOS).
+- RDMA turned on.
+- A Thunderbolt network set up so the connection has an IPv4 address. Without one, Pico keeps the pair on TCP.
+
+The section also reflects the other Mac: if that Mac still needs macOS updated or RDMA turned on, it says so, and it shows `waiting for the other Mac` until that Mac is ready. When everything is in place, it reports that the pair is ready for the direct link, and a cluster you form then runs over RDMA.
+
+## Staying awake
+
+While a Mac is in a cluster — as host or member — Pico keeps it from falling asleep on its own, so the shared model stays loaded and a long response isn't cut off partway. In `General` settings, `Prevent automatic sleep while Pico is running` shows as on and dimmed for as long as the cluster lasts, with the note `This Mac stays awake while it's in a cluster.` Your saved choice isn't changed: when you leave the cluster, or quit Pico, the Mac's normal sleep behavior returns.
+
+This covers idle sleep only. Choosing `Sleep` from the Apple menu, or closing a laptop's lid, still puts the Mac to sleep.
 
 ## Leave or remove the cluster
 
@@ -92,6 +111,9 @@ Pico forms a cluster only once per launch. After you leave or remove a cluster, 
 - **Symptom:** The other Mac shows `In another cluster`.
   **Cause:** That Mac is already hosting or is a member of another cluster.
   **Fix:** Leave that cluster first, then add the Mac again.
+- **Symptom:** The row reads `Couldn't reach "<name>". Is Pico open on that Mac?`.
+  **Cause:** Pico could not connect to the other Mac within ten seconds — usually because Pico isn't running there, or that Mac's address changed.
+  **Fix:** Make sure Pico is open on the other Mac, then click `Add` again to retry with its current address.
 - **Symptom:** The code is rejected.
   **Cause:** The digits do not match the ones shown on the added Mac.
   **Fix:** Re‑read the code on that Mac and type it again. After three wrong tries the request is declined.
@@ -104,6 +126,9 @@ Pico forms a cluster only once per launch. After you leave or remove a cluster, 
 - **Symptom:** `Thunderbolt cable disconnected` or `Connection lost`.
   **Cause:** The link between the Macs dropped.
   **Fix:** Reconnect the Thunderbolt cable, or bring the other Mac back onto the network. The cluster is restored when the other Mac is reachable again.
+- **Symptom:** The pair runs over TCP even with a Thunderbolt 5 cable between the Macs.
+  **Cause:** One of the direct-link requirements isn't met on one of the Macs — a Mac with only Thunderbolt 4 ports, macOS older than 26.2, RDMA off, or no IPv4 address on the Thunderbolt network.
+  **Fix:** Open the `Thunderbolt` section in `Settings` → `Cluster` on each Mac and follow the step it names. See [Get the fastest link](#get-the-fastest-link).
 
 :::caution
 Mac Cluster works best with two Macs that have the same chip and memory. If the Macs have different memory, the cluster uses the same amount from each Mac (the smaller Mac's), and overall speed follows the slower Mac.
