@@ -67,7 +67,7 @@ Replace `SERVICE_NAME` with the name reported by `dns-sd -B _pico._tcp`. While M
 
 You don't choose how the Macs talk to each other, and the app doesn't show it: Pico picks the fastest link the two Macs share and uses it on its own. The `In This Cluster` panel reports the physical connection (for example, `Thunderbolt`), not the transport underneath it.
 
-- **Direct Thunderbolt link (fastest).** When both Macs report that they can move data directly over Thunderbolt, the cluster sends model data over that direct link (RDMA). This is the fastest option and the one to aim for. It takes a recent version of Pico on each Mac, macOS 26.2 or later on both, a Thunderbolt 5 cable between them, and RDMA turned on — see [Get the fastest link](#get-the-fastest-link) below.
+- **Direct Thunderbolt link (fastest).** When both Macs report that they can move data directly over Thunderbolt, the cluster sends model data over that direct link (RDMA). This is the fastest option and the one to aim for. It takes a recent version of Pico on each Mac, Thunderbolt 5 ports on both Macs joined by a Thunderbolt 5 cable, macOS 26.2 or later on both, and RDMA turned on — see [Get the fastest link](#get-the-fastest-link) below.
 - **Ethernet or Wi‑Fi.** Otherwise the cluster runs over TCP: over a network instead of a direct cable, or whenever either Mac doesn't report the direct path. It still works, just slower.
 
 Both Macs decide from the same information, so they always pick the same link. If either can't take the direct path, they pair over TCP instead. If both can but the direct link fails to start, pairing stops with a connection error rather than retrying over TCP.
@@ -80,7 +80,7 @@ The `Thunderbolt` section in `Settings` → `Cluster` tells you whether this Mac
 
 For the direct link, both Macs need all of the following. The section walks you through them roughly in this order:
 
-- A Thunderbolt 5 cable connecting the two Macs.
+- Thunderbolt 5 on both Macs: each Mac needs Thunderbolt 5 ports, connected by a Thunderbolt 5 cable. A Mac with only Thunderbolt 4 ports can't take the direct link, even with a Thunderbolt 5 cable.
 - macOS 26.2 or later (RDMA is not available on earlier macOS).
 - RDMA turned on.
 - A Thunderbolt network set up so the connection has an IPv4 address. Without one, Pico keeps the pair on TCP.
@@ -127,7 +127,7 @@ Pico forms a cluster only once per launch. After you leave or remove a cluster, 
   **Cause:** The link between the Macs dropped.
   **Fix:** Reconnect the Thunderbolt cable, or bring the other Mac back onto the network. The cluster is restored when the other Mac is reachable again.
 - **Symptom:** The pair runs over TCP even with a Thunderbolt 5 cable between the Macs.
-  **Cause:** One of the direct-link requirements isn't met on one of the Macs — macOS older than 26.2, RDMA off, or no IPv4 address on the Thunderbolt network.
+  **Cause:** One of the direct-link requirements isn't met on one of the Macs — a Mac with only Thunderbolt 4 ports, macOS older than 26.2, RDMA off, or no IPv4 address on the Thunderbolt network.
   **Fix:** Open the `Thunderbolt` section in `Settings` → `Cluster` on each Mac and follow the step it names. See [Get the fastest link](#get-the-fastest-link).
 
 :::caution
