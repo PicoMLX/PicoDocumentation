@@ -139,6 +139,16 @@ Pico forms a cluster only once per launch. After you disconnect, quit and reopen
 - **Symptom:** The pair runs over TCP even with a Thunderbolt 5 cable between the Macs.
   **Cause:** One of the direct-link requirements isn't met on one of the Macs — a Mac with only Thunderbolt 4 ports, macOS older than 26.2, RDMA off, or no IPv4 address on the Thunderbolt port.
   **Fix:** Open `Details…` → `Set Up RDMA` on each Mac and follow the step it names. See [Set up RDMA](#set-up-rdma).
+- **Symptom:** The card reads `Thunderbolt Network Isn't Working`.
+  **Cause:** macOS could not add the Thunderbolt port to its network bridge, so the cable has no working network even though it's plugged in.
+  **Fix:** Restart that Mac. A restart usually lets macOS add the port back to the bridge.
+- **Symptom:** The two Macs find each other, but the card says the Thunderbolt Bridge is off and asks you to turn it on.
+  **Cause:** The Thunderbolt port is in a network bridge whose service is turned off. The Macs can still see each other over the bridge's IPv6 link-local address, but a shared model needs IPv4, so the cluster can't run that way.
+  **Fix:** Turn the Thunderbolt Bridge on in `Network` settings. Note that turning the bridge *off* is not what RDMA needs — RDMA needs the port to have its own IP address instead, which is the separate step under [Set up RDMA](#set-up-rdma).
+
+## Read the cluster logs
+
+When a cluster won't form or a link drops, Mac Cluster records what it did to the app's log file at `Documents/logs/<date>.log` in the Pico AI Server container. Every cluster line begins with `Mac Cluster:` and notes the Thunderbolt readings as they change, the Macs found and their links, which backend was chosen (RDMA or TCP), and membership changes. Quote the relevant lines when you report a clustering problem.
 
 :::caution
 Mac Cluster works best with two Macs that have the same chip and memory. If the Macs have different memory, the cluster uses the same amount from each Mac (the smaller Mac's), and overall speed follows the slower Mac.
