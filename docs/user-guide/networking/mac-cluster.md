@@ -17,7 +17,7 @@ Two things to know before you start:
 1. Install and run Pico AI Server on both Macs.
 2. On each Mac, open the native app settings, turn on `Allow local network connections`, turn on `Enable Bonjour broadcasting` (under `Advanced` in `General`), and click `Apply Changes`.
 3. On the Mac that will host, choose a default model in `Models`. The host runs its default model on both Macs.
-4. Download that same model on both Macs. The cluster can only run a model that is present on both.
+4. On the host, download the model the cluster will run. You don't have to download it on the member: if the model is missing there, the host copies its own copy to the member over the cluster link when the cluster starts (see [Share the model across both Macs](#share-the-model-across-both-macs)). If the member already holds that model as a *different* download, the cluster won't run it until both Macs have the same copy.
 5. Connect the two Macs with a Thunderbolt cable. For the fastest link, use Thunderbolt 5 ports on both Macs and a Thunderbolt 5 cable.
 
 ## Turn on Mac Cluster
@@ -27,7 +27,7 @@ Two things to know before you start:
 
 When it is on, the pane shows a single card. The card draws the two Macs and the link between them — each Mac labeled with its chip and memory, such as `M5 Max · 128 GB` — above a title that names the one thing to do next and, below it, at most one button. A `Details…` button under the card opens the full checklist and the RDMA requirements (see [Track setup with the checklist](#track-setup-with-the-checklist)).
 
-Until the other Mac is ready, the card's title tells you what to do next — for example `Open Pico on Your Other Mac`, `Turn On Mac Cluster on "<name>"`, `Connect Your Other Mac`, or `Other Macs Can't Find This Mac` — each with a line under it that explains the step.
+Until the other Mac is ready, the card's title tells you what to do next — for example `Open Pico on Your Other Mac`, `Turn On Mac Cluster on "<name>"`, `Connect Your Other Mac`, `Waiting for "<name>"`, or `Other Macs Can't Find This Mac` — each with a line under it that explains the step.
 
 ## Create the cluster
 
@@ -37,7 +37,15 @@ Do this on the Mac you want to be the host.
 2. When the other Mac is ready, the card reads `Ready to Create a Cluster`, with a line such as `Together: 256 GB for models, over Thunderbolt 5 with RDMA.` Click `Create Cluster`. If Pico finds more than one Mac, the card reads `Choose the Mac to create a cluster with.` and lists each Mac with its own `Create Cluster` button.
 3. While Pico reaches the other Mac, the card reads `Connecting to "<name>"…` with the line `Accept the request on that Mac.` and a `Cancel` button. If Pico can't reach the Mac within ten seconds, the card returns to its ready state and shows `Couldn't reach "<name>". Is Pico open on that Mac?` — it never hangs.
 4. On the other Mac, confirm the request. A prompt reads `"<name>" wants to add this Mac to its cluster`; click `Join`. (Click `Don't Join` to decline.)
-5. Once the Mac joins, the host loads its default model on both Macs. The model row reads `Loading <model> on both Macs…`, then `<model> runs on both Macs`.
+5. Once the Mac joins, the host loads its default model on both Macs. The model row reads `Loading <model> on both Macs…`, then `<model> runs on both Macs`. If the member doesn't have the model, the host copies it over the cluster link first — the row reads `Copying <model> to "<member>"… 45%` on the host and `Copying <model> from "<host>"… 45%` on the member, with a progress bar — and loading continues once the copy finishes. See [Share the model across both Macs](#share-the-model-across-both-macs).
+
+## Share the model across both Macs
+
+Both Macs run the same model: the host runs its default model, and the member runs the host's copy of it. You only download the model on the host.
+
+- **A missing model is copied for you.** When the member doesn't have the model, the host serves its own copy over the cluster link and the member downloads it automatically, using the same download machinery as any other model — so you see the usual progress and the member's free-disk check. The model row shows `Copying <model> to "<member>"… 45%` on the host and `Copying <model> from "<host>"… 45%` on the member, with a progress bar, then loading continues.
+- **If the copy can't finish,** the start fails and the model row shows the reason — for example `Copying "<model>" from "<host>" failed: The model needs 40 GB, but only 12 GB is free on this Mac.` Clear the problem it names and create the cluster again. A copy isn't resumed across attempts: a new cluster starts it over.
+- **Both copies must match.** When both Macs already have the model, Pico checks that the two copies match before running them together — it compares each Mac's `config.json` and weight files by name and size. If they differ, the member won't run the model and reports `"<member>" has a different copy of "<model>": its configuration or weight files don't match. Download it again on one of the Macs.` This is a structural check: a match means the two copies can run together, not that their weights are byte-for-byte identical. A copy Pico can't read fails the same way. Automatic copy only fills in a model the member is *missing* — it won't replace a different copy that's already there.
 
 ## Verify it worked
 
@@ -101,6 +109,19 @@ Each step shows a mark for how far along it is:
 
 `Connect Another Mac` has three steps: `Open Pico on your other Mac`, `Connect the Macs with a Thunderbolt cable`, and `Create a cluster with "<name>"`. `Set Up RDMA` lists the RDMA requirements for both Macs, each with a button that opens the right macOS settings when a change is needed outside Pico (for example `Open Developer Tools Settings` or `Open Network Settings`).
 
+## See the cluster in the menu bar
+
+While a Mac is in a cluster, the Pico menu bar icon carries a small link badge — like the chain link Personal Hotspot adds to the Wi‑Fi icon. If the two Macs can't reach each other, the link is slashed.
+
+Open the menu bar item, and while this Mac is hosting or is a member it shows a `Mac Cluster` section between the server status and `Memory`:
+
+- the other Mac's name and the link to it — for example `Thunderbolt 5 · RDMA` or `Thunderbolt · 80 Gb/s`, or `Disconnected` in orange when the link has dropped;
+- the same title and detail as the Cluster settings card, such as `256 GB for Models` and `This Mac lends its memory and chip to "<host>".`;
+- the model row — the same `<model> runs on both Macs` (or copy progress) you see in settings;
+- a `Disconnect` button in the section header.
+
+Hold Option while opening the menu to see the connection details: the Thunderbolt port, interface, and speed; both Macs' addresses; and whether the model's two halves talk over `RDMA over Thunderbolt (JACCL)` or `TCP (ring)`.
+
 ## Staying awake
 
 While a Mac is in a cluster — as host or member — Pico keeps it from falling asleep on its own, so the shared model stays loaded and a long response isn't cut off partway. In `General` settings, `Prevent automatic sleep while Pico is running` shows as on and dimmed for as long as the cluster lasts, with the note `This Mac stays awake while it's in a cluster.` Your saved choice isn't changed: when you leave the cluster, or quit Pico, the Mac's normal sleep behavior returns.
@@ -128,8 +149,17 @@ Pico forms a cluster only once per launch. After you disconnect, quit and reopen
   **Cause:** Pico could not connect to the other Mac within ten seconds — usually because Pico isn't running there, or that Mac's address changed.
   **Fix:** Make sure Pico is open on the other Mac, then click `Create Cluster` again to retry with its current address.
 - **Symptom:** The model will not load on both Macs.
-  **Cause:** The host has no default model, or the model is not downloaded on both Macs.
-  **Fix:** Set a default model on the host and download the same model on both Macs.
+  **Cause:** The host has no default model, or its copy of the model can't be read to share it.
+  **Fix:** Set a default model on the host and confirm it's downloaded there. The member doesn't need its own copy — the host copies the model over the cluster link when the cluster starts.
+- **Symptom:** The member reports `"<name>" has a different copy of "<model>": its configuration or weight files don't match. Download it again on one of the Macs.`
+  **Cause:** Both Macs have the model, but the downloads differ. Pico compares each copy's `config.json` and weight files before running and won't run two copies that don't match. (Automatic copy only fills in a model the member is *missing*; it won't replace a copy already there.)
+  **Fix:** Download the model again on one of the Macs so both hold the same copy, then create the cluster again.
+- **Symptom:** The model row reads `Copying "<model>" from "<host>" failed: …` with a reason.
+  **Cause:** The member couldn't download the host's copy over the cluster link — most often too little free disk space, though the message names the actual problem.
+  **Fix:** Clear the problem the message names (for example, free up disk space on the member), then create the cluster again.
+- **Symptom:** The card reads `Waiting for "<name>"` with `Pico there hasn't been found over the cable yet.`
+  **Cause:** You just connected the Thunderbolt cable. The two Macs have found each other over Wi‑Fi or Ethernet, but Pico hasn't been seen over the new cable yet.
+  **Fix:** Wait a few seconds — Pico keeps checking and the card moves on once it finds the other Mac over the cable. After about half a minute it falls back to asking you to open Pico on the other Mac.
 - **Symptom:** The card reads `Update Pico`.
   **Cause:** The two Macs run different, incompatible Pico versions.
   **Fix:** Update Pico to the same version on both Macs.
@@ -148,7 +178,7 @@ Pico forms a cluster only once per launch. After you disconnect, quit and reopen
 
 ## Read the cluster logs
 
-When a cluster won't form or a link drops, Mac Cluster records what it did to the app's log file at `Documents/logs/<date>.log` in the Pico AI Server container. Every cluster line begins with `Mac Cluster:` and notes the Thunderbolt readings as they change, the Macs found and their links, which backend was chosen (RDMA or TCP), and membership changes. Quote the relevant lines when you report a clustering problem.
+When a cluster won't form or a link drops, Mac Cluster records what it did to the app's log file at `Documents/logs/<date>.log` in the Pico AI Server container (one file per day). Each line reads `<timestamp> <level>: [<label>] <message>`, where the label names the component that logged it — for example `[PicoCore]`. Cluster messages carry the `Mac Cluster:` marker, so you can search the file for `Mac Cluster:` to find them; they note the Thunderbolt readings as they change, the Macs found and their links, which backend was chosen (RDMA or TCP), and membership changes. Quote the relevant lines when you report a clustering problem.
 
 :::caution
 Mac Cluster works best with two Macs that have the same chip and memory. If the Macs have different memory, the cluster uses the same amount from each Mac (the smaller Mac's), and overall speed follows the slower Mac.
