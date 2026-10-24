@@ -25,7 +25,7 @@ Two things to know before you start:
 1. On each Mac, open `Settings` → `Cluster`.
 2. Turn on the `Mac Cluster` switch.
 
-When it is on, the pane shows a single card. The card draws the two Macs and the link between them — each Mac labeled with its chip and memory, such as `M5 Max · 128 GB` — above a title that names the one thing to do next and, below it, at most one button. A `Details…` button under the card opens the full checklist and the RDMA requirements (see [Track setup with the checklist](#track-setup-with-the-checklist)).
+When it is on, the pane shows a single card. The card draws the two Macs and the link between them, above a title that names the one thing to do next and, below it, at most one button. Each Mac is labeled with its chip and memory, such as `M5 Max · 128 GB`; under `This Mac`, a second line shows this Mac's own Pico name — the name the other Mac sees it by — so you can tell two Macs' settings apart. The line between the Macs carries the link's symbol in its middle: Thunderbolt's bolt, marked `5` for a Thunderbolt 5 link (80 Gb/s or faster, or one ready for RDMA) and `4` for a slower one, or the Wi‑Fi or Ethernet symbol when the Macs pair over the network instead. The symbol takes the line's color, and the link's name — for example `Thunderbolt · 40 Gb/s` — sits just below the line. Before the two Macs are linked, the line is plain.
 
 Until the other Mac is ready, the card's title tells you what to do next — for example `Open Pico on Your Other Mac`, `Turn On Mac Cluster on "<name>"`, `Connect Your Other Mac`, `Waiting for "<name>"`, or `Other Macs Can't Find This Mac` — each with a line under it that explains the step.
 
@@ -85,29 +85,20 @@ Pairing comes first, and the two Macs must run compatible versions of Pico — o
 
 ### Set up RDMA
 
-Open `Details…` to see whether each Mac is ready for the direct RDMA link. The `RDMA over Thunderbolt` section shows a grid with a column for `This Mac` and one for `Your Other Mac`, and a row for each requirement — `Thunderbolt 5`, `RDMA turned on`, and `Port has its own IP address` — plus a `Cable` row showing the port and speed (for example, `Port 3 · 80 Gb/s`) or `Not connected`. The `Set Up RDMA` checklist below it walks you through anything that isn't met yet; when a step needs a change outside Pico, it shows a button that opens the right macOS settings for you.
+Pico checks each Mac against the direct-link requirements on its own and keeps the card on the next thing to fix until both Macs qualify. You don't open a separate screen for it.
 
 For the direct link, both Macs need all of the following:
 
 - **Thunderbolt 5 on both Macs:** each Mac needs Thunderbolt 5 ports, connected by a Thunderbolt 5 cable. A Mac with only Thunderbolt 4 ports can't take the direct link, even with a Thunderbolt 5 cable.
 - **macOS 26.2 or later** (RDMA over Thunderbolt is not available on earlier macOS).
-- **RDMA turned on,** then a restart. On macOS 27 or later, turn it on in `Privacy & Security` → `Developer Tools` (the step's `Open Developer Tools Settings` button takes you there). On earlier macOS, start up in macOS Recovery, choose `Utilities` → `Terminal`, enter `rdma_ctl enable`, and restart.
+- **RDMA turned on,** then a restart. On macOS 27 or later, turn it on in `Privacy & Security` → `Developer Tools`. On earlier macOS, start up in macOS Recovery, choose `Utilities` → `Terminal`, enter `rdma_ctl enable`, and restart.
 - **An IPv4 address on the Thunderbolt port.** The port the cable is in needs its own active network service, set to configure IPv4 using DHCP. Without one, Pico keeps the pair on TCP.
 
-The checklist also reflects the other Mac: if that Mac still needs macOS updated or RDMA turned on, it says so, and it marks the final `Both Macs ready for RDMA` step as in progress until that Mac is ready. When everything is in place, the card reads `Ready to Create a Cluster` with the line `…over Thunderbolt 5 with RDMA.`, and a cluster you create then runs over RDMA. If you'd rather not wait, the card offers `Create Cluster Without RDMA` to form the cluster over TCP now.
+Both Macs must qualify: if the other Mac still needs macOS updated or RDMA turned on, the card waits on it. When everything is in place, the card reads `Ready to Create a Cluster` with the line `…over Thunderbolt 5 with RDMA.`, and a cluster you create then runs over RDMA. If you'd rather not wait, the card offers `Create Cluster Without RDMA` to form the cluster over TCP now.
 
-## Track setup with the checklist
+## Work through setup from the card
 
-You can set up a cluster from the card alone — it always surfaces just the single next step. The `Details…` button opens `Cluster Details`, which lists every step and ticks each one off as it's done, so you can see the whole picture at once. The steps are grouped into `Connect Another Mac` and, when RDMA applies, `Set Up RDMA`.
-
-Each step shows a mark for how far along it is:
-
-- A green checkmark — the step is `Done`.
-- A numbered circle (`Step 1`, `Step 2`, …) — the step is still `To do`.
-- A spinner — the step is `In progress` (Pico is waiting, for example while the other Mac restarts).
-- A yellow warning triangle — the step `Needs attention`, meaning there's something to fix before the cluster can form.
-
-`Connect Another Mac` has three steps: `Open Pico on your other Mac`, `Connect the Macs with a Thunderbolt cable`, and `Create a cluster with "<name>"`. `Set Up RDMA` lists the RDMA requirements for both Macs, each with a button that opens the right macOS settings when a change is needed outside Pico (for example `Open Developer Tools Settings` or `Open Network Settings`).
+You set up a cluster from the card alone: it always surfaces just the single next step, so you fix one thing at a time and the card moves on once it's done. It walks you through connecting the other Mac — opening Pico there, connecting the Thunderbolt cable, and creating the cluster — and, when RDMA applies, through the [RDMA requirements](#set-up-rdma) above. The card's title names the step, and the line under it explains what to do.
 
 ## See the cluster in the menu bar
 
@@ -168,7 +159,7 @@ Pico forms a cluster only once per launch. After you disconnect, quit and reopen
   **Fix:** Reconnect the Thunderbolt cable. The cluster is restored when the other Mac is reachable again.
 - **Symptom:** The pair runs over TCP even with a Thunderbolt 5 cable between the Macs.
   **Cause:** One of the direct-link requirements isn't met on one of the Macs — a Mac with only Thunderbolt 4 ports, macOS older than 26.2, RDMA off, or no IPv4 address on the Thunderbolt port.
-  **Fix:** Open `Details…` → `Set Up RDMA` on each Mac and follow the step it names. See [Set up RDMA](#set-up-rdma).
+  **Fix:** Work through the RDMA requirements on each Mac. See [Set up RDMA](#set-up-rdma).
 - **Symptom:** The card reads `Thunderbolt Network Isn't Working`.
   **Cause:** macOS could not add the Thunderbolt port to its network bridge, so the cable has no working network even though it's plugged in.
   **Fix:** Restart that Mac. A restart usually lets macOS add the port back to the bridge.
