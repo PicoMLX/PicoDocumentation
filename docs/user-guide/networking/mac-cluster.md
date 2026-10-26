@@ -81,6 +81,8 @@ You don't choose how the Macs talk to each other, and the app doesn't show it: P
 
 Both Macs decide from the same information, so they always pick the same link. If either can't take the direct path, they pair over TCP instead. If both can but the direct link fails to start, pairing stops with a connection error rather than retrying over TCP.
 
+Before the Macs connect, Pico checks that the link it picked can actually carry the model's traffic to the other Mac. Each Mac makes a quick test connection to the other over that link and waits for any answer. It also sends the shared model's data over the cluster link itself — the Thunderbolt cable — so that traffic can't slip onto Wi‑Fi or Ethernet, which macOS might otherwise route it through. If a Mac finds it has no working route to the other over the link, Pico stops and names the reason instead of forming a cluster whose shared model then can't start.
+
 Pairing comes first, and the two Macs must run compatible versions of Pico — ones new enough to speak the same cluster protocol. A Mac too old to pair with a newer one shows the card title `Update Pico`, with the line `"<name>" runs another version of Pico. Update Pico on both Macs.`; update the older Mac and create the cluster again.
 
 ### Set up RDMA
@@ -148,6 +150,9 @@ Pico forms a cluster only once per launch. After you disconnect, quit and reopen
 - **Symptom:** The model row reads `Copying "<model>" from "<host>" failed: …` with a reason.
   **Cause:** The member couldn't download the host's copy over the cluster link — most often too little free disk space, though the message names the actual problem.
   **Fix:** Clear the problem the message names (for example, free up disk space on the member), then create the cluster again.
+- **Symptom:** The two Macs link in the card, but the shared model never reaches `<model> runs on both Macs`.
+  **Cause:** The model's traffic can't reach the other Mac over the link Pico picked — for example the Thunderbolt port has no working IPv4 route, or a firewall is blocking it. Pico checks this route before it connects and stops rather than forming a cluster whose model can't run.
+  **Fix:** Give the Thunderbolt port on each Mac its own IPv4 address (see [Set up RDMA](#set-up-rdma)) and make sure no firewall blocks Pico on that link, then create the cluster again. If it still won't start, check the cluster logs for the `Mac Cluster:` line that names the route (see [Read the cluster logs](#read-the-cluster-logs)).
 - **Symptom:** The card reads `Waiting for "<name>"` with `Pico there hasn't been found over the cable yet.`
   **Cause:** You just connected the Thunderbolt cable. The two Macs have found each other over Wi‑Fi or Ethernet, but Pico hasn't been seen over the new cable yet.
   **Fix:** Wait a few seconds — Pico keeps checking and the card moves on once it finds the other Mac over the cable. After about half a minute it falls back to asking you to open Pico on the other Mac.
