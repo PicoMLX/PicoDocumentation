@@ -27,6 +27,11 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Mac Cluster',
+      items: ['user-guide/mac-cluster'],
+    },
+    {
+      type: 'category',
       label: 'WebUI',
       items: [
         'user-guide/webui/use-the-webui',
