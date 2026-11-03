@@ -30,6 +30,7 @@ const sidebars: SidebarsConfig = {
       label: 'WebUI',
       items: [
         'user-guide/webui/use-the-webui',
+        'user-guide/webui/preview-rich-content',
         'user-guide/webui/open-web-chat-and-launch-client-apps',
       ],
     },

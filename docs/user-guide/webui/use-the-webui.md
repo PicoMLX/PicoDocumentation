@@ -23,6 +23,7 @@ Open `http://127.0.0.1:11434/` to reach it. At least one model should be availab
    The current placeholder is `Type a message...`.
 6. Attach files when needed.
    Text files and PDFs are accepted. Images need a vision-capable model. Audio needs an audio-capable model.
+   When a reply contains a chart, diagram, HTML snippet, or interactive card, the WebUI can render it inline. See [Preview Rich Content in Chat](./preview-rich-content.md).
 7. Open the settings dialog when you want local chat behavior changes.
    The current sections are `General`, `Display`, `Sampling`, `Penalties`, `Import/Export`, `MCP`, and `Developer`.
 
@@ -44,5 +45,6 @@ You can send a message, get a response, and find the conversation again in the s
 
 ## Next steps
 
+- [Preview Rich Content in Chat](./preview-rich-content.md)
 - [Open Web Chat and Launch Client Apps](./open-web-chat-and-launch-client-apps.md)
 - [Chat API](../../reference/chat/chat-api.md)
