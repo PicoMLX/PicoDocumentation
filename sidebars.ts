@@ -40,6 +40,11 @@ const sidebars: SidebarsConfig = {
     },
     {
       type: 'category',
+      label: 'Monitoring',
+      items: ['user-guide/dashboard/performance-dashboard'],
+    },
+    {
+      type: 'category',
       label: 'Reference',
       items: [
         'reference/endpoint-summary',
