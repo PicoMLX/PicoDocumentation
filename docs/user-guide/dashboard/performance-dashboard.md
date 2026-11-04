@@ -35,6 +35,23 @@ Open **Settings → Dashboard** to control recording and access.
 - **Keep request details** sets how long per‑request details are kept — **7**, **30**, or **90 days**. Shortening the retention removes older request details. Hourly usage totals are kept for one year regardless of this setting.
 - **Clear Recorded History…** removes the recorded history.
 
+## Verify it worked
+
+A request only shows up if it is being recorded, so first confirm **Record request history** is on in **Settings → Dashboard**.
+
+With the dashboard open, send one request to the server so there is something to display. From a terminal, replace `MODEL_NAME` with a model you have installed:
+
+```bash
+curl http://127.0.0.1:11434/v1/chat/completions \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "MODEL_NAME",
+    "messages": [{"role": "user", "content": "Hello"}]
+  }'
+```
+
+Then open the **Activity** page: the request you just sent appears as a new row with its model, timing, and a completed outcome. The **Overview** charts register its generation and prompt-processing throughput, and **History** folds it into the totals for the current period.
+
 ## Remote access
 
 By default, the dashboard is only reachable from the Mac running Pico AI Server. A browser request is treated as the local owner only when it comes from the loopback address with a matching local origin; forwarded or proxy headers never grant local access.
