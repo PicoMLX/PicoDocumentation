@@ -59,6 +59,21 @@ For the fastest link, each Mac's Thunderbolt port needs RDMA turned on and its o
 
 When every step is complete, the checklist reads **Cluster ready** and the chosen model loads across both Macs.
 
+## Verify it worked
+
+1. In the Cluster tab, confirm the checklist shows **Cluster ready**.
+2. Send a request to the server. A clustered model is served through the same API and port as a single-Mac model, so a normal chat request confirms inference runs across both Macs:
+
+   ```bash
+   curl http://127.0.0.1:11434/v1/chat/completions \
+     -H "Content-Type: application/json" \
+     -d '{"messages":[{"role":"user","content":"Say hello in one word."}]}'
+   ```
+
+   The request omits `model`, so the server uses its configured default model — the one loaded across the cluster.
+
+If you get a JSON response containing an assistant message, the cluster is serving requests. If the request hangs or errors, return to the Cluster tab: a step that is no longer complete (for example, a dropped cable) appears again in the checklist.
+
 ## Performance considerations
 
 Below the checklist, the Cluster tab lists **Performance considerations** — a plain list of things that affect speed without blocking setup. For example, a slower‑than‑expected link (a Thunderbolt 4 cable between two Thunderbolt 5 Macs), or another Mac with less memory or a different chip than this one. These are advisories: the cluster still works, but it may run slower.
