@@ -113,5 +113,5 @@ Error body shape
 
 ## Edge cases
 - If `model` is omitted, the current build falls back to the configured default model.
-- Helper routes such as `GET /v1/responses/:response_id` and `POST /v1/responses/:response_id/cancel` exist in the current build, but they are not ready for public client use.
+- Helper routes such as `GET /v1/responses/:response_id` and `POST /v1/responses/:response_id/cancel` return `501 Not Implemented`. Pico AI Server does not store responses, so these endpoints are not supported. `POST /v1/responses` itself is unaffected.
 - If you need multimodal request handling today, the Chat API is the safer surface. The current Responses adapter is text-first.

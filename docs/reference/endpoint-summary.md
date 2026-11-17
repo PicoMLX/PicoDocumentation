@@ -33,8 +33,8 @@ Use this page as the cheat sheet for the current HTTP surface in Pico AI Server.
 | --- | --- |
 | `/v1/embeddings` | Route is not registered in the current build |
 | `/api/embed` | Route is not registered in the current build |
-| `/v1/responses/:response_id*` | Helper routes exist in the current build, but are not ready for client documentation |
-| `/v1/conversations/*` | Routes exist in the current build, but most handlers are placeholders |
+| `/v1/responses/:response_id*` | `GET`, `DELETE`, `cancel`, and `input_items` return `501 Not Implemented`. Pico does not store responses, so these endpoints are not supported |
+| `/v1/conversations/*` | All routes return `501 Not Implemented`. The Conversations API is not supported yet |
 
 ## Example
 
@@ -53,6 +53,7 @@ If Pico AI Server is running, you get JSON back.
 | `408` | Request timeout | Used when generation is canceled |
 | `409` | Conflict | Used for incomplete model states on some paths |
 | `500` | Server error | Used for internal failures and some incomplete compatibility handlers |
+| `501` | Not implemented | Used for routes that exist in the API surface but Pico does not implement, such as `/slots`, `/v1/conversations/*`, and the `/v1/responses/:response_id` helper routes |
 
 ## Edge cases
 - `GET /api/chat/completions` exists, but it is an internal helper that returns an empty `200` JSON body. Do not use it as the public Chat Completions route.
