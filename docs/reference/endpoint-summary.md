@@ -26,8 +26,6 @@ Use this page as the cheat sheet for the current HTTP surface in Pico AI Server.
 | `GET` | `/props` | llama.cpp-compatible | Properties endpoint |
 | `GET` | `/slots` | llama.cpp-compatible | Currently returns `501 Not Implemented` |
 | `GET`, `POST` | `/mcp` | MCP | Streamable MCP endpoint |
-| `GET` | `/dashboard/` | Dashboard | Browser performance dashboard. Served to the loopback owner by default; remote access is opt-in and requires an enabled administrator |
-| `GET` | `/api/dashboard/` | Dashboard | Telemetry snapshots, bounded request pages and details, and JSONL/CSV exports behind the same access rules as `/dashboard/` |
 
 ## Not public yet
 
