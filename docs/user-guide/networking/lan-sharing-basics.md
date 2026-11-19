@@ -9,9 +9,9 @@ The default port is `11434`. A client on another device needs a routed path to t
 
 ## Turn on LAN sharing
 
-1. Open the native app settings.
+1. Open Settings and select the **Server** tab.
 2. Turn on `Allow local network connections`.
-3. Click `Apply Changes`.
+3. Click `Apply and Restart Server`.
 4. Copy the server address from the menu extra, or query it with:
 
    ```bash

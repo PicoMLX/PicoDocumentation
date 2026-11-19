@@ -57,4 +57,4 @@ If Pico AI Server is running, you get JSON back.
 ## Edge cases
 - `GET /api/chat/completions` exists, but it is an internal helper that returns an empty `200` JSON body. Do not use it as the public Chat Completions route.
 - The router does not currently attach the auth middleware. Do not assume bearer-token enforcement unless your deployment adds it.
-- `Serve Pico web chat` is present in settings, but the current build still serves the root WebUI unconditionally. Treat that toggle as under validation.
+- `Enable Web Chat` is present in the Server settings tab, but the current build still serves the root WebUI unconditionally. Treat that toggle as under validation.
