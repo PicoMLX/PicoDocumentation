@@ -5,14 +5,14 @@ sidebar_position: 3
 
 Bonjour discovery lets Pico clients find Pico AI Server without typing a server address first. Pico AI Server advertises the service type `_pico._tcp.` and includes the IP address, port, local host name, and a stable server identifier in the TXT record.
 
-Two things to know before you start: `Enable Bonjour broadcasting` only works when `Allow local network connections` is on, and discovery is optional — clients still need a manual server-address path.
+Two things to know before you start: `Discoverable on the local network` only works when `Allow local network connections` is on, and discovery is optional — clients still need a manual server-address path.
 
 ## Turn on discovery and browse for the server
 
-1. Open the native app settings.
+1. Open Settings and select the **Server** tab.
 2. Turn on `Allow local network connections`.
-3. Turn on `Enable Bonjour broadcasting`.
-4. Click `Apply Changes`.
+3. Turn on `Discoverable on the local network`.
+4. Click `Apply and Restart Server`.
 5. Browse for Pico AI Server from a Mac:
 
    ```bash
