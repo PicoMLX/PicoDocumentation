@@ -5,19 +5,15 @@ sidebar_position: 4
 
 A Mac Cluster links two Macs so they run larger models faster than one Mac could alone. One Mac is the **host** (the main Mac) and the other is a **member** (a worker). While a Mac is a member, the host answers every request sent to the member, so a client can connect to either Mac and reach the same models.
 
+This page explains what connecting to a cluster member means for a client — which server actually answers, which API key applies, and what the error responses are. Pico AI Server guides the two-Mac setup itself (the `Mac Cluster` settings and the setup wizard's `Enable Clustering` step); this page does not repeat those on-screen steps.
+
 Two things to know before you start: clustering needs a Thunderbolt cable between the two Macs, and a member's own user accounts and API keys stop working until it leaves the cluster — the host checks every sign-in against its own accounts.
 
-## Set up a cluster
+## Turn on clustering
 
-You can start clustering from the setup wizard's `Enable Clustering` step, or at any time from the native app settings.
+Clustering is off until an admin turns it on. You can start it from the native app settings' `Mac Cluster` toggle (`Run larger models faster with two Macs`), or from the setup wizard's `Enable Clustering` step. Pico AI Server then walks you through connecting the two Macs over Thunderbolt and confirming the pairing. For best results, use two Macs with the same chip and memory.
 
-1. Connect the two Macs with a Thunderbolt cable. For best performance, use Thunderbolt 5 when both Macs support it, and use Macs with the same chip and memory.
-2. On both Macs, open the native app settings and turn on the `Mac Cluster` toggle (`Run larger models faster with two Macs`).
-3. On the host, select the other Mac and click `Create Cluster`.
-4. Verify the pairing code. One Mac shows a code; enter the same code on the other Mac to confirm you are pairing the right machines.
-5. On the member, accept the invitation. The member is told what joining means — that the host will answer every request sent to this Mac, and, when user accounts are on, that this Mac's accounts and API keys will not work until it leaves the cluster — then click `Join`.
-
-On a Thunderbolt 5 Mac, clustering requires RDMA, which transfers data directly between Macs over Thunderbolt 5. If RDMA is off, the app points you to the setting to turn it on. A Mac without Thunderbolt 5 can still join a cluster without RDMA, but transfers may be slower.
+On a Thunderbolt 5 Mac, clustering uses RDMA, which transfers data directly between the Macs over Thunderbolt 5. A Mac without Thunderbolt 5 can still join a cluster, but transfers may be slower.
 
 ## How a cluster answers requests
 
