@@ -23,6 +23,7 @@ const sidebars: SidebarsConfig = {
         'user-guide/networking/lan-sharing-basics',
         'user-guide/networking/hostnames-ip-addresses-and-what-to-copy',
         'user-guide/networking/bonjour-discovery',
+        'user-guide/networking/mac-cluster',
       ],
     },
     {
