@@ -13,6 +13,7 @@ const sidebars: SidebarsConfig = {
       items: [
         'user-guide/getting-started/install-and-run-pico-ai-server',
         'user-guide/getting-started/configure-settings',
+        'user-guide/getting-started/download-and-manage-models',
         'user-guide/getting-started/connect-a-client',
       ],
     },

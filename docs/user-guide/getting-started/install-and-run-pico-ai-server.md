@@ -47,9 +47,10 @@ curl http://127.0.0.1:11434/hostname
   **Fix:** Turn the setting on and test again from the other device.
 - **Symptom:** The WebUI opens, but no model is usable.
   **Cause:** No model is available yet.
-  **Fix:** Open the `Models` tab in the native app and wait for a model to become available.
+  **Fix:** Open the `Models` tab in the native app and download a model. See [Download and Manage Models](./download-and-manage-models.md).
 
 ## Next steps
 
 - [Configure Settings](./configure-settings.md)
+- [Download and Manage Models](./download-and-manage-models.md)
 - [Use the WebUI](../webui/use-the-webui.md)
