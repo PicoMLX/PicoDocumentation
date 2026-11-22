@@ -11,7 +11,7 @@ Pico AI Server is a macOS app for Apple Silicon Macs — it runs models with MLX
 
 1. Launch Pico AI Server.
 2. Complete the first-run flow.
-   The onboarding flow can set `Allow local network connections`, `Broadcast Bonjour`, `Open at login`, and `Prevent sleep`.
+   The onboarding flow can set `Allow local network connections`, `Broadcast Bonjour`, `Open at login`, and `Prevent sleep`. It also offers a recommended chat model and a ColBERT tool retrieval model to download — see [Download Models](./download-models.md).
 3. Open the WebUI at `http://127.0.0.1:11434/`.
    The onboarding flow normally opens this address for you after setup.
 4. If you want LAN access, leave `Allow local network connections` on.
@@ -47,9 +47,10 @@ curl http://127.0.0.1:11434/hostname
   **Fix:** Turn the setting on and test again from the other device.
 - **Symptom:** The WebUI opens, but no model is usable.
   **Cause:** No model is available yet.
-  **Fix:** Open the `Models` tab in the native app and wait for a model to become available.
+  **Fix:** Download a chat model (see [Download Models](./download-models.md)) and wait for it to finish; the Downloads window shows progress.
 
 ## Next steps
 
+- [Download Models](./download-models.md)
 - [Configure Settings](./configure-settings.md)
 - [Use the WebUI](../webui/use-the-webui.md)
