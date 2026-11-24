@@ -45,6 +45,7 @@ const sidebars: SidebarsConfig = {
         'reference/endpoint-summary',
         'reference/models/models-api',
         'reference/chat/chat-api',
+        'reference/conversations/conversations-api',
         'reference/openresponses-api',
         'reference/embeddings/embeddings-api',
       ],
