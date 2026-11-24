@@ -26,6 +26,12 @@ Open `http://127.0.0.1:11434/` to reach it. At least one model should be availab
 7. Open the settings dialog when you want local chat behavior changes.
    The current sections are `General`, `Display`, `Sampling`, `Penalties`, `Import/Export`, `MCP`, and `Developer`.
 
+## Where your chats are stored
+
+When the admin enables user accounts (`Require an Invitation`, under Settings), the bundled web chat saves your conversations on the server under your account, and they sync across your open browser windows. See the [Conversations API](../../reference/conversations/conversations-api.md) for how a client stores and reads those chats.
+
+With user accounts off, server-side chat storage is unavailable: the Conversations API answers `501`.
+
 ## Verify it worked
 
 You can send a message, get a response, and find the conversation again in the sidebar. Try switching models and sending the same question again — the model selector shows which model answers.
