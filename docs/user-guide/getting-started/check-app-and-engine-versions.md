@@ -52,12 +52,17 @@ You have read the version information correctly when:
 - The `Version …` line at the top of the window matches the build you
   installed.
 
-You can confirm the app version and build without opening the window, from any
-client, using the server's version endpoint. With the server running:
+You can also confirm the app version and build without opening the window, by
+asking the server's version endpoint. Run this on the Mac running Pico AI
+Server:
 
 ```bash
 curl http://127.0.0.1:11434/api/version
 ```
+
+From another device, replace `127.0.0.1` with the server's LAN address — see
+[Connect a Client](./connect-a-client.md) — which requires **Allow local network
+connections** to be on.
 
 A running server replies with JSON:
 
