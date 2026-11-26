@@ -4,7 +4,7 @@ sidebar_position: 3
 description: Turn on Pico AI Server's built-in tools, including the system info tool, and expose them to your models and to MCP clients.
 ---
 
-Pico AI Server ships with **built-in tools** that a model can call during a conversation. When a tool-capable model decides it needs one, Pico AI Server runs the tool locally and feeds the result back into the model's answer — no external service required.
+Pico AI Server ships with **built-in tools** that a model can call during a conversation. When a tool-capable model decides it needs one, Pico AI Server runs the tool and feeds the result back into the model's answer. Some tools, such as the calculator and System Info, run entirely on your Mac; others, such as web search and web fetch, reach out to the internet on your behalf.
 
 Built-in tools are separate from the tools you connect through the Model Context Protocol (MCP). MCP connects Pico to *external* servers; built-in tools run *inside* Pico AI Server. Both are managed in Pico's settings, in the **Tools** tab, where you enable or disable them as needed.
 
@@ -17,6 +17,20 @@ This page shows how to enable built-in tools and uses the **System Info** tool a
 3. Turn on the individual tools you want to make available to models.
 
 Only enabled tools are offered to the model. A tool you leave off is never advertised, so a model cannot call it.
+
+## Which tools are on by default
+
+Pico AI Server enables its general-purpose tools automatically the first time you run it, so a tool-capable model can use them without any setup. The tools that are on by default include **web search**, **web fetch**, **Maps**, a **calculator**, the current **time**, **skills**, and **System Info**.
+
+Your own choices always win. Once you turn a tool on or off in the **Tools** tab, Pico AI Server remembers that preference and applies it on every launch, regardless of the default.
+
+Tools that read personal data or need a system permission stay **off until you turn them on**, so Pico never reaches into private data on your behalf. These opt-in tools include:
+
+- **Music** — searching Apple Music checks your Apple Music authorization, even for catalog lookups.
+- **Weather** — requests access to your location.
+- **Browser automation** — can read a shared browser session.
+
+Turn these on only when you want them, and only after reviewing the privacy warning in the **Tools** tab.
 
 ## The System Info tool
 
