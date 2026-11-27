@@ -77,7 +77,28 @@ curl -N http://127.0.0.1:11434/v1/responses \
   }'
 ```
 
-The stream uses `text/event-stream`. The current implementation emits standard response lifecycle events such as `response.created` and `response.completed`.
+The stream uses `text/event-stream`. Each server-sent event names its type on the `event:` line and repeats it as the `type` field of the JSON on the `data:` line.
+
+#### Stream events
+
+| Event | Meaning |
+| --- | --- |
+| `response.created` | The response object was created; streaming has begun. |
+| `response.in_progress` | Generation is running. |
+| `response.output_item.added` / `.done` | An output item (a message, a reasoning item, or a function call) opened or closed. |
+| `response.content_part.added` / `.done` | A content part within an output item opened or closed. |
+| `response.output_text.delta` | A chunk of answer text. Concatenate the `delta` values to rebuild the answer. |
+| `response.output_text.done` | The answer text for the current content part is complete. |
+| `response.reasoning_text.delta` | A chunk of the model's reasoning (thinking), for models that emit it. |
+| `response.reasoning_text.done` | The reasoning text is complete. |
+| `response.function_call_arguments.delta` / `.done` | Streamed arguments for a function (tool) call. |
+| `response.completed` | The response finished successfully. |
+| `response.incomplete` | The response stopped before completing (for example, a token limit). |
+| `response.failed` | The response ended in an error. |
+
+:::note
+**Reasoning events use the OpenAI event names.** Pico streams the model's reasoning as `response.reasoning_text.delta` and `response.reasoning_text.done`, matching the OpenAI Responses API. A client written for OpenAI that skips reasoning by event name sees it as reasoning rather than running it into the answer text. Reasoning is delivered in its own output item, separate from `response.output_text` events.
+:::
 
 ## Response notes
 
