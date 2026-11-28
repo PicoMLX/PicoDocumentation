@@ -23,9 +23,9 @@ Use this page as the cheat sheet for the current HTTP surface in Pico AI Server.
 | `GET` | `/api/version` | Ollama-compatible | Version route |
 | `GET` | `/api/ps` | Ollama-compatible | Current build reports available models with expiry times |
 | `POST` | `/api/show` | Ollama-compatible | Model metadata |
-| `GET` | `/props` | llama.cpp-compatible | Properties endpoint |
+| `GET` | `/props` | llama.cpp-compatible | Properties endpoint; reports the loaded model's trained context length as `n_ctx` |
 | `GET` | `/slots` | llama.cpp-compatible | Currently returns `501 Not Implemented` |
-| `GET`, `POST` | `/mcp` | MCP | Streamable MCP endpoint |
+| `GET`, `POST` | `/mcp` | MCP | Streamable MCP endpoint; each session belongs to the signed-in user, and serves the tools that user has enabled |
 
 ## Not public yet
 
@@ -57,4 +57,5 @@ If Pico AI Server is running, you get JSON back.
 ## Edge cases
 - `GET /api/chat/completions` exists, but it is an internal helper that returns an empty `200` JSON body. Do not use it as the public Chat Completions route.
 - The router does not currently attach the auth middleware. Do not assume bearer-token enforcement unless your deployment adds it.
+- Browser requests are checked by `Host` and `Origin`, separately from any bearer token. A request whose `Host` is not one of this Mac's names gets `421`, and a browser request whose `Origin` is not Pico itself gets `403`. Requests sent without an `Origin`, such as SDKs and desktop MCP clients, are unaffected.
 - `Serve Pico web chat` is present in settings, but the current build still serves the root WebUI unconditionally. Treat that toggle as under validation.

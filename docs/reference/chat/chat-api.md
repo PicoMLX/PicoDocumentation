@@ -87,9 +87,24 @@ Set `chat_template_kwargs.enable_thinking` to `true` or `false`.
 ### Ollama-compatible reasoning
 Set `think` to `true` or `false`.
 
-:::info
-On the Chat Completions path, reasoning text currently arrives as normal assistant output rather than a separate thinking field.
-:::
+### Reasoning output
+
+When a model thinks before answering, Pico AI Server keeps that thinking in a separate field instead of mixing it into the reply text.
+
+**OpenAI-compatible (`/v1/chat/completions`).** Thinking is returned in `reasoning_content`, never in `content`:
+
+- Streaming: thinking arrives in `delta.reasoning_content`, and those chunks carry no `content`. The answer follows in `delta.content`.
+- Non-streaming: thinking is in `message.reasoning_content`, and the answer is in `message.content`.
+- A response with no thinking omits `reasoning_content`.
+
+`reasoning_content` is the field name used by llama.cpp's server and DeepSeek, and the field Pico's bundled Web Chat reads.
+
+**Ollama-compatible (`/api/chat` and `/api/generate`).** Thinking is returned in `message.thinking`:
+
+- Streaming: thinking arrives in `message.thinking` with an empty `content`, then the answer streams in `message.content`.
+- Non-streaming: `message.thinking` holds the thinking, and is `""` when the model did not think.
+
+Thinking is kept even when the model makes a tool call, because models often think before calling a tool.
 
 ## Examples
 

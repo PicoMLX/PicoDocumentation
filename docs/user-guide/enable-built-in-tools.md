@@ -53,11 +53,28 @@ The model calls the System Info tool and answers with your machine's model, chip
 - The reply names your actual Mac model, chip, and RAM — not a generic or made-up machine.
 - With the **System Info** tool turned **off**, the same question can no longer be answered from live host data.
 
-## Expose your tools to MCP clients
+## Share tools with connected apps
 
-The **Tools** tab also has an **Expose enabled tools to MCP clients** toggle. Turn it on to let external MCP clients reach the tools you have enabled, in addition to your own models using them during generation.
+Enabling a tool does two things at once: it offers the tool to your models during chat, and it makes the tool available to apps that connect to Pico AI Server over MCP at the `/mcp` endpoint. There is no separate "expose to MCP" switch — a tool's own switch is the sharing control. A tool you leave off is never advertised on either path.
 
-Your enabled tools — built-in tools included — are what get exposed. Tools you leave off are never offered.
+Each MCP client connects as the signed-in user and sees only the tools that user has enabled. The **Tool Sharing** note under the switches describes what connected apps can reach.
+
+## Tools that need approval
+
+Not every tool runs automatically. Pico AI Server sorts tools by what they can do:
+
+- **Read-only** tools, such as **System Info**, only report information. They run without asking.
+- **Tools that change something** — writing or deleting files, sending a non-GET web request, browser actions that click or type, or writing to Calendar, Reminders, or Contacts — require approval before they run.
+
+A plain `/v1/chat/completions`, Ollama, or Responses request that does not opt into approvals is offered only the tools that need no approval. To let a client use tools that need approval, use the Responses MCP opt-in (see the [OpenResponses API](../reference/openresponses-api.md)) or Pico's built-in Web Chat, which prompts you before each such call and offers an **Always allow** option.
+
+## Connect external MCP servers
+
+The **Tools** page also lists the external MCP servers Pico connects to. Their tools appear alongside the built-in ones and follow the same approval rules.
+
+- **Trust This Server.** Each server has a trust toggle. Pico treats an untrusted server's tools as always needing approval. A trusted server's tool runs without approval only when the tool marks itself read-only.
+- **Per-tool modes.** Open a server to set each tool to **Ask First** (the default), **Run Without Asking**, or **Off**. An **Off** tool is never offered to your models or to `/mcp` clients. **Run Without Asking** lifts approval for that one tool — your choice, not a claim about the tool. **New Tools** sets the mode for tools the server adds later.
+- **Connect Xcode** (macOS). When the companion PicoXcodeBridge app is running, the page offers **Connect Xcode**, which adds Xcode's MCP tools through the bridge. It starts with a small preset: read-only tools run without asking, build and test tools ask first, and the rest start **Off**. You can change any of them.
 
 ## Privacy and LAN access
 

@@ -18,7 +18,7 @@ Pico AI Server exposes `POST /v1/responses` as its current OpenResponses entry p
 | `stream` | boolean | No | `true` enables `text/event-stream` |
 | `max_output_tokens` | integer | No | Maps to the server max-completion setting |
 | `reasoning.effort` | string | No | `none` and `low` map to reasoning off |
-| `tools` | array | No | Function tools are bridged into the Pico tool format |
+| `tools` | array | No | Function tools are bridged into the Pico tool format. One `mcp` entry can opt into Pico's own tools — see [Pico tools over MCP](#pico-tools-over-mcp) |
 | `tool_choice` | string or object | No | Defaults to `auto` when omitted |
 | `temperature` | number | No | Defaults to `1` in the current non-streaming response builder |
 | `top_p` | number | No | Defaults to `1` |
@@ -78,6 +78,86 @@ curl -N http://127.0.0.1:11434/v1/responses \
 ```
 
 The stream uses `text/event-stream`. The current implementation emits standard response lifecycle events such as `response.created` and `response.completed`.
+
+## Pico tools over MCP
+
+A Responses client can let the model use Pico AI Server's own tools — the built-in tools and any connected MCP servers' tools — by opting in. Without the opt-in, a Responses request is offered only tools that need no approval, and no tool items appear in the output.
+
+### Opt in
+
+Add one `mcp` entry to `tools` whose `server_label` is `pico`:
+
+```json
+{
+  "type": "mcp",
+  "server_label": "pico",
+  "server_url": "http://127.0.0.1:11434/mcp",
+  "require_approval": "always"
+}
+```
+
+- `server_label` must be `pico`. The host in `server_url` is ignored. An `mcp` entry for any other server, or a second `pico` entry, is rejected with `400`.
+- `allowed_tools` restricts which Pico tools the model may use. It is a list of tool names, or an object `{"tool_names": ["TOOL_NAME"], "read_only": true}`. Omit it to allow every Pico tool; send `[]` to allow none.
+- `require_approval` controls which calls pause for your approval:
+
+  | Value | Effect |
+  | --- | --- |
+  | omitted or `"always"` | Every call to a Pico tool pauses for approval |
+  | `"never"` | No call pauses |
+  | `{"never": {"tool_names": ["TOOL_NAME"]}}` | The named tools run without asking; the rest pause |
+  | `{"always": {"tool_names": ["TOOL_NAME"]}}` | Only the named tools pause; the rest run |
+  | `{..., "read_only": true}` | Matches tools from a trusted source that mark themselves read-only |
+
+### Example
+
+This streams a request that lets the model call Pico's tools without pausing for approval:
+
+```bash
+curl -N http://127.0.0.1:11434/v1/responses \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "MODEL_NAME",
+    "stream": true,
+    "input": "What Mac and chip am I running on?",
+    "tools": [
+      {
+        "type": "mcp",
+        "server_label": "pico",
+        "server_url": "http://127.0.0.1:11434/mcp",
+        "require_approval": "never"
+      }
+    ]
+  }'
+```
+
+### Output items
+
+With the opt-in, Pico reports what it does as Responses output items, each with matching stream events:
+
+- `mcp_list_tools` — the tools Pico offers, each with `name`, `description`, `input_schema`, and, for trusted sources, `annotations`.
+- `mcp_call` — one per tool Pico runs, with `name`, `arguments`, and `output` or `error`, and a `status` of `completed` or `failed`.
+- `mcp_approval_request` — emitted for each Pico call waiting for your approval. The turn then ends with `status: "completed"`.
+
+A client's own function tools are still reported as `function_call` items.
+
+### Approve and resume
+
+When a turn ends with `mcp_approval_request` items, send the conversation history back to continue it. For each request, add an `mcp_approval_response`:
+
+```json
+{ "type": "mcp_approval_response", "approval_request_id": "mcpr_…", "approve": true }
+```
+
+Add a `function_call_output` for each of your own `function_call` items from the same turn. Pico rechecks permission, runs each approved call, and reports it as an `mcp_call` carrying its `approval_request_id`. A declined call is not run; the model is told the user declined it.
+
+A call you approve runs once. If you send its approval again while it is still running, Pico returns `409`; once it has finished, Pico returns the stored result instead of running the tool a second time.
+
+### Errors specific to the opt-in
+
+| Status | Cause |
+| --- | --- |
+| `400` | An `mcp` opt-in for a server other than `pico`, a second `pico` entry, an approval sent without the opt-in, an unanswered approval request, or an approval that refers to an earlier turn |
+| `409` | An approval re-sent while its call is still running |
 
 ## Response notes
 
